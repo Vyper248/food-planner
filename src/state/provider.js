@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import { format } from "date-fns";
 
 import Context from "./context";
@@ -18,6 +18,8 @@ const reducer = (state={}, action) => {
         case 'ADD_ITEM': return {...state, items: addToArray(value, state.items)};
         case 'EDIT_ITEM': return {...state, items: editArray(value, state.items)};
         case 'DELETE_ITEM': return {...state, items: removeFromArray(value, state.items)};
+
+        case 'RESTORE_LOCAL': return {...state, ...value};
 
         default: return state;
     }
@@ -42,6 +44,20 @@ const getID = () => {
 
 const Provider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    //restoring state from local storage
+    useEffect(() => {
+        let restoredState = localStorage.getItem('food-planner-state');
+        if (!restoredState) restoredState = initialState;
+        else restoredState = JSON.parse(restoredState);
+
+        dispatch({type: 'RESTORE_LOCAL', payload: restoredState});
+    }, []);
+
+    //saving state to local storage when changed
+    useEffect(() => {
+        localStorage.setItem('food-planner-state', JSON.stringify(state));
+    }, [state]);
 
     return (
         <Context.Provider value={{ ...state, dispatch}}>
