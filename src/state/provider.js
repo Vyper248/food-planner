@@ -1,4 +1,6 @@
 import { useReducer } from "react";
+import { format } from "date-fns";
+
 import Context from "./context";
 
 const initialState = {
@@ -12,12 +14,30 @@ const reducer = (state={}, action) => {
     let value = action.payload;
     switch(action.type) {
         case 'ADD_MEAL': return {...state, meals: addToArray(value, state.meals)};
+
+        case 'ADD_ITEM': return {...state, items: addToArray(value, state.items)};
+        case 'EDIT_ITEM': return {...state, items: editArray(value, state.items)};
+        case 'DELETE_ITEM': return {...state, items: removeFromArray(value, state.items)};
+
         default: return state;
     }
 }
 
 const addToArray = (obj, arr) => {
+    obj.id = getID();
     return [...arr, obj];
+}
+
+const editArray = (obj, arr) => {
+    return arr.map(item => item.id === obj.id ? obj : item);
+}
+
+const removeFromArray = (obj, arr) => {
+    return arr.filter(item => item.id === obj.id ? false : true);
+}
+
+const getID = () => {
+    return format(new Date(), 'T');
 }
 
 const Provider = ({ children }) => {
