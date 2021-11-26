@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useContext, useState } from 'react';
 
 import context from '../state/context';
+import { sortArray } from '../functions';
 
 import Card from '../components/Card';
 import BasicButton from '../components/BasicButton';
@@ -58,13 +59,7 @@ const Items = () => {
         dispatch({type: 'DELETE_ITEM', payload: item});
     }
 
-    let sortedItems = items.sort((a,b) => {
-        if (sort === 'Name') return a.name < b.name ? -1 : 1;
-        if (sort === 'Size') return a.size - b.size;
-        if (sort === 'Calories') return a.calories - b.calories;
-        if (sort === 'Portions') return a.portions - b.portions;
-        return 0;
-    });
+    let sortedItems = sortArray(sort, items);
     
     return (
         <StyledComp>
@@ -92,10 +87,10 @@ const Items = () => {
                     })
                 }
             </Container>
-            <Modal open={editOpen} closeOnClickOutside={true} closeFunc={closeModal}>
+            <Modal open={editOpen} closeFunc={closeModal}>
                 { editOpen ? <AddEditItem item={itemToEdit} editing={true} onFinish={onChangeItem} onCancel={closeModal}/> : null }
             </Modal>
-            <Modal open={addOpen} closeOnClickOutside={true} closeFunc={closeModal}>
+            <Modal open={addOpen} closeFunc={closeModal}>
                 { addOpen ? <AddEditItem onFinish={onAddItem} onCancel={closeModal}/> : null }
             </Modal>
         </StyledComp>

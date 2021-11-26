@@ -112,6 +112,10 @@ const StyledComp = styled.div`
         margin-top: 5px;
     }
 
+    & .confirm {
+        background-color: lightgreen !important;
+    }
+
     & > .confirmation > div:first-of-type {
         margin-right: 5px;
     }

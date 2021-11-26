@@ -13,11 +13,13 @@ const initialState = {
 const reducer = (state={}, action) => {
     let value = action.payload;
     switch(action.type) {
-        case 'ADD_MEAL': return {...state, meals: addToArray(value, state.meals)};
-
         case 'ADD_ITEM': return {...state, items: addToArray(value, state.items)};
         case 'EDIT_ITEM': return {...state, items: editArray(value, state.items)};
         case 'DELETE_ITEM': return {...state, items: removeFromArray(value, state.items)};
+
+        case 'ADD_MEAL': return {...state, meals: addToArray(value, state.meals)};
+        case 'EDIT_MEAL': return {...state, meals: editArray(value, state.meals)};
+        case 'DELETE_MEAL': return {...state, meals: removeFromArray(value, state.meals)};
 
         case 'RESTORE_LOCAL': return {...state, ...value};
 

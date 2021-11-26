@@ -27,6 +27,7 @@ const StyledComp = styled.div`
         margin-left: -25px; 
         border-right: none; 
         border-radius: 5px 0px 0px 5px;
+        justify-content: end;
     }
 
     & > select {
@@ -66,7 +67,14 @@ const StyledComp = styled.div`
 
 const Dropdown = ({placeholder='Select an Option', labelText='', width=150, labelWidth, value, options=[], onChange}) => {
     let type;
-    if (Array.isArray(options) && options.length === 0) return <StyledComp width={width}><select></select></StyledComp>;
+    if (Array.isArray(options) && options.length === 0) return (
+        <StyledComp width={width} labelText={labelText && labelText.length > 0}>
+            { labelText && labelText.length > 0 ? <label>{labelText}</label> : null }
+            <select>
+                <option hidden>No More Items</option>
+            </select>
+        </StyledComp>
+    );
     if (Array.isArray(options) && typeof options[0] === 'string') type = 'basic';
     if (Array.isArray(options) && typeof options[0] === 'object') type = 'advanced';
     if (typeof options === 'object' && !Array.isArray(options)) type = 'groups';
