@@ -1,27 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
+import { useState, useContext } from 'react';
 
 import context from '../state/context';
 
 import BasicButton from '../components/BasicButton';
 import Dropdown from '../components/Dropdown';
-import Grid from '../components/Grid';
 import Input from '../components/Input';
-
-const StyledItemRow = styled.div`
-
-`;
-
-const ItemRow = ({item, qty, onDelete}) => {
-    let measurement = item.measurement;
-    if (measurement === ' items') measurement = '';
-    return (
-        <StyledItemRow>
-            <span>{`${qty}${measurement} ${item.name}`}</span>
-            <BasicButton label='Del' width='50px' onClick={onDelete}/>
-        </StyledItemRow>
-    );
-}
 
 const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     const { items } = useContext(context);
@@ -35,24 +18,36 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     });
 
     let firstItem = filteredItems.length > 0 ? filteredItems[0].id : 0;
-    const [itemToAdd, setItemToAdd] = useState(firstItem);
-    const [itemMeasurement, setItemMeasurement] = useState('g');
-    const [itemQty, setItemQty] = useState(1);
-
-    useEffect(() => {
-        let itemObj = items.find(obj => obj.id === itemToAdd);
-        let measurement = itemObj.measurement;
-        if (measurement === ' items') measurement = 'Qty';
-        else if (measurement === 'g') measurement = 'Grams';
-        setItemMeasurement(measurement);
-    }, [itemToAdd]);
 
     if (editing && meal.name === undefined) return null;
 
     const onChangeName = (value) => setName(value);
-    const onChangeItemToAdd = (value) => setItemToAdd(value);
-    const onChangeItemQty = (value) => setItemQty(value);
     const onChangeType = (value) => setType(value);
+
+    const getMeasurementText = (itemId) => {
+        let itemObj = items.find(obj => obj.id === itemId);
+        if (!itemObj) return 'Qty';
+        let { measurement } = itemObj;
+        if (measurement === ' items') measurement = 'Qty';
+        else if (measurement === 'g') measurement = 'Grams';
+        return measurement;
+    }
+
+    const onChangeItem = (index) => (item) => {
+        let newItemList = itemList.map((obj, i) => {
+            if (i === index) return {...obj, id: item};
+            return obj;
+        });
+        setItemList(newItemList);
+    }
+
+    const onChangeQty = (index) => (qty) => {
+        let newItemList = itemList.map((obj, i) => {
+            if (i === index) return {...obj, qty: qty};
+            return obj;
+        });
+        setItemList(newItemList);
+    }
 
     const onSave = () => {
         if (name === '') return;
@@ -62,18 +57,13 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     }
 
     const onAddItem = () => {
-        let newObj = {id: itemToAdd, qty: itemQty};
+        let newObj = {id: firstItem, qty: 1};
         let newItemList = [...itemList, newObj];
         setItemList(newItemList);
     }
 
-    const parseItemID = (id) => {
-        let item = items.find(item => item.id === id);
-        return item;
-    }
-
-    const onDeleteItem = (id) => () => {
-        let newItemList = itemList.filter(obj => obj.id !== id);
+    const onDeleteItem = (index) => () => {
+        let newItemList = itemList.filter((obj, i) => i !== index);
         setItemList(newItemList);
     }
 
@@ -86,14 +76,19 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                 <Input type='text' autoFocus placeholder='Item Name' labelText='Name' labelWidth='150' width='200' value={name} onChange={onChangeName}/><br/>
                 <Dropdown labelText='Type' width='120' value={type} options={['Breakfast', 'Lunch', 'Dinner']}  onChange={onChangeType}/><br/>
                 {
-                    itemList.map(({id, qty}) => {
-                        let item = parseItemID(id);
-                        return <ItemRow key={id} item={item} qty={qty} onDelete={onDeleteItem(id)}/>
+                    itemList.map((item, i) => {
+                        let measurement = getMeasurementText(item.id);
+                        return (
+                            <div key={`itemList-${i}`}>
+                                <Dropdown labelText='Item' width='150' value={item.id} options={items.map( item => ({value: item.id, display: `${item.name} (${item.size}${item.measurement})`}) )} onChange={onChangeItem(i)}/>
+                                <Input type='number' labelText={measurement} labelWidth='100' width='70' value={item.qty} onChange={onChangeQty(i)}/>
+                                <BasicButton label='Del' width='50px' onClick={onDeleteItem(i)}/>
+                                <br/>
+                            </div>
+                        );
                     })
                 }
-                <Dropdown labelText='Item' width='150' value={itemToAdd} options={filteredItems.map( item => ({value: item.id, display: item.name}) )}  onChange={onChangeItemToAdd}/>
-                <Input type='number' labelText={itemMeasurement} width='70' value={itemQty} onChange={onChangeItemQty} min='1'/>
-                <BasicButton label='+' color='lightblue' width='40px' onClick={onAddItem}/>
+                <BasicButton label='Add New Item' color='lightblue' width='150px' onClick={onAddItem}/>
             </section>
             <footer>
                 <BasicButton label='Save' onClick={onSave}/>
