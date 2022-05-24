@@ -6,13 +6,33 @@ import Context from "./context";
 const initialState = {
     meals: [],
     items: [],
-    planner: {},
+    planner: {
+        days: 7,
+        startDay: 'Monday',
+        numberPeople: 1,
+        showCalories: true,
+        dailyMeals: []
+    },
+    switching: false,
+    switchId: 0,
+    switchType: '',
     shoppingList: {}
 };
 
 const reducer = (state={}, action) => {
     let value = action.payload;
+    console.log(action.type, value);
     switch(action.type) {
+        case 'SET_DAYS': return {...state, planner: {...state.planner, days: value}};
+        case 'SET_START_DAY': return {...state, planner: {...state.planner, startDay: value}};
+        case 'SET_NUMBER_PEOPLE': return {...state, planner: {...state.planner, numberPeople: value}};
+        case 'SET_SHOW_CALORIES': return {...state, planner: {...state.planner, showCalories: value}};
+        case 'SET_DAILY_MEALS': return {...state, planner: {...state.planner, dailyMeals: value}};
+
+        case 'SET_SWITCHING': return {...state, switching: value};
+        case 'SET_SWITCH_TYPE': return {...state, switchType: value};
+        case 'SET_SWITCH_ID': return {...state, switchId: value};
+
         case 'ADD_ITEM': return {...state, items: addToArray(value, state.items)};
         case 'EDIT_ITEM': return {...state, items: editArray(value, state.items)};
         case 'DELETE_ITEM': return {...state, items: removeFromArray(value, state.items)};
@@ -20,6 +40,8 @@ const reducer = (state={}, action) => {
         case 'ADD_MEAL': return {...state, meals: addToArray(value, state.meals)};
         case 'EDIT_MEAL': return {...state, meals: editArray(value, state.meals)};
         case 'DELETE_MEAL': return {...state, meals: removeFromArray(value, state.meals)};
+
+        case 'EDIT_PLANNER_MEAL': return {...state, planner: {...state.planner, dailyMeals: editArray(value, state.planner.dailyMeals)}};
 
         case 'RESTORE_LOCAL': return {...state, ...value};
 
@@ -44,17 +66,22 @@ const getID = () => {
     return format(new Date(), 'T');
 }
 
+//restoring state from local storage
+const getFromLocalStorage = (initialValue = initialState) => {
+    let restoredState = localStorage.getItem('food-planner-state');
+    if (!restoredState) restoredState = initialState;
+    else restoredState = JSON.parse(restoredState);
+
+    if (restoredState.planner === undefined) restoredState.planner = {};
+    restoredState.planner = {...initialState.planner, ...restoredState.planner};
+
+    restoredState.switching = false;
+
+    return restoredState;
+}
+
 const Provider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    //restoring state from local storage
-    useEffect(() => {
-        let restoredState = localStorage.getItem('food-planner-state');
-        if (!restoredState) restoredState = initialState;
-        else restoredState = JSON.parse(restoredState);
-
-        dispatch({type: 'RESTORE_LOCAL', payload: restoredState});
-    }, []);
+    const [state, dispatch] = useReducer(reducer, {}, getFromLocalStorage);
 
     //saving state to local storage when changed
     useEffect(() => {

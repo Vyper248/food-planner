@@ -25,6 +25,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     const { items } = useContext(context);
     const [name, setName] = useState(meal.name || '');
     const [itemList, setItemList] = useState(meal.itemList || []);
+    const [type, setType] = useState(meal.type || 'Dinner');
 
     let filteredItems = items.filter(item => {
         if (itemList.find(obj => obj.id === item.id) !== undefined) return false;
@@ -40,14 +41,14 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     const onChangeName = (value) => setName(value);
     const onChangeItemToAdd = (value) => setItemToAdd(value);
     const onChangeItemQty = (value) => setItemQty(value);
+    const onChangeType = (value) => setType(value);
 
     const onSave = () => {
         if (name === '') return;
         if (itemList.length === 0) return;
-        let newItem = {...meal, name, itemList};
+        let newItem = {...meal, name, type, itemList};
         onFinish(newItem);
     }
-
 
     const onAddItem = () => {
         let newObj = {id: itemToAdd, qty: itemQty};
@@ -72,10 +73,11 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
             </header>
             <section>
                 <Input type='text' autoFocus placeholder='Item Name' labelText='Name' labelWidth='150' value={name} onChange={onChangeName}/><br/>
+                <Dropdown labelText='Type' width='120' value={type} options={['Breakfast', 'Lunch', 'Dinner']}  onChange={onChangeType}/><br/>
                 {
                     itemList.map(({id, qty}) => {
                         let item = parseItemID(id);
-                        return <ItemRow item={item} qty={qty} onDelete={onDeleteItem(id)}/>
+                        return <ItemRow key={id} item={item} qty={qty} onDelete={onDeleteItem(id)}/>
                     })
                 }
                 <Dropdown labelText='Item' width='150' value={itemToAdd} options={filteredItems.map( item => ({value: item.id, display: item.name}) )}  onChange={onChangeItemToAdd}/>

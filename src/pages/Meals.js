@@ -76,7 +76,7 @@ const Meals = () => {
                             <Card key={meal.id}>
                                 <header>{meal.name}</header>
                                 <section>
-                                    <TableBasic data={[['Calories', 234]]}/>
+                                    <TableBasic data={[['Type', meal.type], ['Calories', 234]]}/>
                                 </section>
                                 <footer>
                                     <BasicButton label="Edit" onClick={openEditModal(meal)} width='80px' color='lightblue'/>
