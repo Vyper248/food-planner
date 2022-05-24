@@ -17,7 +17,7 @@ const StyledComp = styled.div`
         border: 1px solid transparent;
         outline: 1px solid transparent;
         outline-offset: 0px;
-        ${props => props.open ? 'border: 1px solid blue; border-bottom: 1px solid transparent;' : ''};
+        ${props => props.open ? 'border: 1px solid blue;' : ''};
 
         :hover {
             cursor: pointer;
@@ -52,6 +52,7 @@ const StyledComp = styled.div`
         border: 1px solid blue;
         width: 300px;
         left: 50%;
+        top: calc(100% - 1px);
         transform: translateX(-50%);
         z-index: 2;
 

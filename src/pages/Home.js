@@ -240,6 +240,14 @@ const Home = () => {
             <Input type='number' labelText='Number of Days' value={days} onChange={onChangeDays} min={7} max={21}/>
             <br/>
             <StyledMealTable>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Breakfast</th>
+                        <th>Lunch</th>
+                        <th>Dinner</th>
+                    </tr>
+                </thead>
                 <tbody>
                 {
                     mealsToDisplay.map(obj => {

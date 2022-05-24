@@ -12,23 +12,25 @@ const StyledTable = styled.table`
         border-right: 1px solid #CCC;
     }
 
-    th:first-child {
-        border-top-left-radius: 5px;
-    }
-
-    th:last-child {
-        border-top-right-radius: 5px;
-    }
-
-    th {
-        border-bottom: 1px solid black;
-        background-color: #DDD;
-        min-width: 100px;
-    }
-
-    th:last-child,
-    td:last-child {
-        border-right: none;
+    thead {
+        th:first-child {
+            border-top-left-radius: 5px;
+        }
+    
+        th:last-child {
+            border-top-right-radius: 5px;
+        }
+    
+        th {
+            border-bottom: 1px solid black;
+            background-color: #DDD;
+            min-width: 100px;
+        }
+    
+        th:last-child,
+        td:last-child {
+            border-right: none;
+        }
     }
 
     tr:last-child {
