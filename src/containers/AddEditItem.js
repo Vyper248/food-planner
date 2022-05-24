@@ -10,21 +10,18 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
     const [size, setSize] = useState(item.size || 0);
     const [measurement, setMeasurement] = useState(item.measurement || 'g');
     const [calories, setCalories] = useState(item.calories || 0);
-    const [portions, setPortions] = useState(item.portions || 1);
 
     if (editing && item.name === undefined) return null;
 
     const onChangeSize = (value) => setSize(value);
     const onChangeMeasurement = (value) => setMeasurement(value);
     const onChangeCalories = (value) => setCalories(value);
-    const onChangePortions = (value) => setPortions(value);
     const onChangeName = (value) => setName(value);
 
     const onSave = () => {
         if (name === '') return;
         if (size === 0) return;
-        if (portions === 0) return;
-        let newItem = {...item, name, size, measurement, calories, portions};
+        let newItem = {...item, name, size, measurement, calories};
         onFinish(newItem);
     }
 
@@ -39,7 +36,6 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
                     <Input type='number' labelText='Size' labelWidth='150' value={size} onChange={onChangeSize}/>
                     <Dropdown labelText='Measurement' value={measurement} labelWidth='150' width='100' options={['g', 'ml', ' items']} onChange={onChangeMeasurement}/>
                     <Input type='number' labelText='Calories' labelWidth='150' value={calories} onChange={onChangeCalories}/>
-                    <Input type='number' labelText='Portions' labelWidth='150' value={portions} onChange={onChangePortions}/>
                 </Grid>
             </section>
             <footer>

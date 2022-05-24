@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
 import context from '../state/context';
@@ -13,9 +13,11 @@ const StyledItemRow = styled.div`
 `;
 
 const ItemRow = ({item, qty, onDelete}) => {
+    let measurement = item.measurement;
+    if (measurement === ' items') measurement = '';
     return (
         <StyledItemRow>
-            <span>{ `${qty}x ${item.name}` }</span>
+            <span>{`${qty}${measurement} ${item.name}`}</span>
             <BasicButton label='Del' width='50px' onClick={onDelete}/>
         </StyledItemRow>
     );
@@ -34,7 +36,16 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
 
     let firstItem = filteredItems.length > 0 ? filteredItems[0].id : 0;
     const [itemToAdd, setItemToAdd] = useState(firstItem);
+    const [itemMeasurement, setItemMeasurement] = useState('g');
     const [itemQty, setItemQty] = useState(1);
+
+    useEffect(() => {
+        let itemObj = items.find(obj => obj.id === itemToAdd);
+        let measurement = itemObj.measurement;
+        if (measurement === ' items') measurement = 'Qty';
+        else if (measurement === 'g') measurement = 'Grams';
+        setItemMeasurement(measurement);
+    }, [itemToAdd]);
 
     if (editing && meal.name === undefined) return null;
 
@@ -72,7 +83,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                 { editing ? <span>{name}</span> : 'New Item' }
             </header>
             <section>
-                <Input type='text' autoFocus placeholder='Item Name' labelText='Name' labelWidth='150' value={name} onChange={onChangeName}/><br/>
+                <Input type='text' autoFocus placeholder='Item Name' labelText='Name' labelWidth='150' width='200' value={name} onChange={onChangeName}/><br/>
                 <Dropdown labelText='Type' width='120' value={type} options={['Breakfast', 'Lunch', 'Dinner']}  onChange={onChangeType}/><br/>
                 {
                     itemList.map(({id, qty}) => {
@@ -81,7 +92,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                     })
                 }
                 <Dropdown labelText='Item' width='150' value={itemToAdd} options={filteredItems.map( item => ({value: item.id, display: item.name}) )}  onChange={onChangeItemToAdd}/>
-                <Input type='number' labelText='Portions' width='50' value={itemQty} onChange={onChangeItemQty} min='1'/>
+                <Input type='number' labelText={itemMeasurement} width='70' value={itemQty} onChange={onChangeItemQty} min='1'/>
                 <BasicButton label='+' color='lightblue' width='40px' onClick={onAddItem}/>
             </section>
             <footer>

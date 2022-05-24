@@ -68,7 +68,7 @@ const Items = () => {
                 <Grid columnTemplate='1fr 1fr 1fr'>
                     <div></div>
                     <div><BasicButton label='Add New Item' color='lightblue' onClick={openAddModal}/></div>
-                    <div><Dropdown labelText='Sort By' value={sort} options={['Name', 'Calories', 'Size', 'Portions']} onChange={onChangeSort}/></div>
+                    <div><Dropdown labelText='Sort By' value={sort} options={['Name', 'Calories', 'Size']} onChange={onChangeSort}/></div>
                 </Grid>
                 { 
                     sortedItems.map(item => {
@@ -76,7 +76,7 @@ const Items = () => {
                             <Card key={item.id}>
                                 <header>{item.name}</header>
                                 <section>
-                                    <TableBasic data={[['Size', item.size+item.measurement], ['Calories', item.calories], ['Portions', item.portions]]}/>
+                                    <TableBasic data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>
                                 </section>
                                 <footer>
                                     <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='lightblue'/>
