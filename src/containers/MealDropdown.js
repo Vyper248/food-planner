@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import context from '../state/context';
 
-import List from './List';
-import BasicButton from './BasicButton';
+import List from '../components/List';
+import BasicButton from '../components/BasicButton';
 
 const StyledComp = styled.div`
     position: relative;

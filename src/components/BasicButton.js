@@ -9,6 +9,13 @@ const StyledComp = styled.div`
     padding: 5px;
     margin: ${props => props.margin ? props.margin : '5px'};
     display: inline-block;
+    height: 30px;
+
+    & > svg {
+        font-size: 1.5em;
+        position: relative;
+        top: -2px;
+    }
 
     &:hover {
         cursor: pointer;

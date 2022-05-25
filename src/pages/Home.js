@@ -1,13 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { TiArrowUnsorted } from 'react-icons/ti';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 import context from '../state/context';
 
 import StyledMealTable from '../components/Styled/StyledMealTable';
-import MealDropdown from '../components/MealDropdown';
+import MealDropdown from '../containers/MealDropdown';
 import Dropdown from '../components/Dropdown';
 import Input from '../components/Input';
+import BasicButton from '../components/BasicButton';
 
 const StyledComp = styled.div`
 
@@ -57,64 +59,24 @@ const addMeals = (planner) => {
     return newMeals;
 }
 
-const sequenceDays = (dailyMeals, startDay) => {
-    let dayIndex = daysOfWeek.indexOf(startDay);
-    dailyMeals.forEach(meal => {
-        meal.day = daysOfWeek[dayIndex%7];
-        dayIndex++;
-    });
-}
-
-const organisePlanner = (planner) => {
-    let { days, startDay, dailyMeals } = planner;
-
-    if (dailyMeals.length === 0) return dailyMeals;
-
-    //trim extra days that aren't needed
+const trimMeals = (dailyMeals, days) => {
     let newArray = [...dailyMeals];
-    if (dailyMeals.length > days) {
+    if (newArray.length > days) {
         if (days < 7) days = 7;
         newArray = dailyMeals.slice(0,days);
     }
-
-    //if first day is correct, don't need to do anything else
-    let firstDay = newArray[0].day;
-    if (firstDay === startDay) return newArray;
-
-    if (firstDay !== startDay) {
-        //find first day that matches start day
-        let indexOfStartDay = 0;
-        for (let i = 0; i < 7; i++) {
-            let meal = newArray[i];
-            if (meal.day === startDay) {
-                indexOfStartDay = i;
-                break;
-            }
-        }
-
-        //split array and reorganise days
-        let daysFromStart = newArray.slice(indexOfStartDay);
-        let daysBeforeStart = newArray.slice(0, indexOfStartDay);
-        newArray = [...daysFromStart, ...daysBeforeStart];    
-    }
-
-    //make sure days are still sequential - matters when days is not a multiple or 7
-    sequenceDays(newArray, startDay);
-
     return newArray;
 }
 
 const Home = () => {
     const { planner, meals, switchId, switchType, dispatch } = useContext(context);
-    const { days, startDay, people, showCalories, dailyMeals } = planner;
+    const { days, people, showCalories, dailyMeals } = planner;
     const [ openId, setOpenId ] = useState(0);
 
-    const onChangeStartDay = (value) => {
-        dispatch({type: 'SET_START_DAY', payload: value});
-    }
-
     const onChangeDays = (value) => {
-        dispatch({type: 'SET_DAYS', payload: value});
+        if (value > 3) value = 3;
+        if (value < 1) value = 1;
+        dispatch({type: 'SET_DAYS', payload: value*7});
     }
 
     const onChangeShowCalories = (value) => {
@@ -134,17 +96,11 @@ const Home = () => {
         let newMeals = [];
 
         if (dailyMeals.length < days) newMeals = addMeals(planner);
-        else newMeals = organisePlanner(planner);
+        else if (dailyMeals.length > days) newMeals = trimMeals(dailyMeals, days);
+        else return;
 
         dispatch({type: 'SET_DAILY_MEALS', payload: newMeals});
     }, [days]);
-
-    //check to make sure displaying from the correct start day
-    useEffect(() => {
-        let newMeals = organisePlanner(planner);
-
-        dispatch({type: 'SET_DAILY_MEALS', payload: newMeals});
-    }, [startDay]);
 
     const onOpenMeal = (id) => () => {
         setOpenId(id);
@@ -199,6 +155,20 @@ const Home = () => {
         swapObjects(objA, objB, typeKey, type);
     }
 
+    const moveStartDayUp = () => {
+        let newArray = [...dailyMeals];
+        let lastItem = newArray.pop();
+        newArray.unshift(lastItem);
+        dispatch({type: 'SET_DAILY_MEALS', payload: newArray});
+    }
+
+    const moveStartDayDown = () => {
+        let newArray = [...dailyMeals];
+        let firstItem = newArray.shift();
+        newArray.push(firstItem);
+        dispatch({type: 'SET_DAILY_MEALS', payload: newArray});
+    }
+
     const swapObjects = (objA, objB, typeKey, type) => {
         let mealA = objA[typeKey];
         let mealB = objB[typeKey];
@@ -240,14 +210,13 @@ const Home = () => {
     return (
         <StyledComp>
             <h3>Planner</h3>
-            <Dropdown labelText='Start Day' value={startDay} options={daysOfWeek} onChange={onChangeStartDay}/>
-            <Input type='number' labelText='Number of Days' value={days} onChange={onChangeDays} min={7} max={21}/>
+            <Input type='number' labelText='Number of Weeks' value={days/7} onChange={onChangeDays} min={1} max={3}/>
             <Input type='checkbox' labelText='Show Calories' value={showCalories} onChange={onChangeShowCalories}/>
             <br/>
             <StyledMealTable>
                 <thead>
                     <tr>
-                        <th></th>
+                        <th><BasicButton label={<FiChevronUp/>} width='50px' onClick={moveStartDayUp}/></th>
                         <th>Breakfast</th>
                         <th>Lunch</th>
                         <th>Dinner</th>
@@ -266,6 +235,12 @@ const Home = () => {
                         );
                     })
                 }
+                    <tr className='hidden'>
+                        <td><BasicButton label={<FiChevronDown/>} width='50px' onClick={moveStartDayDown}/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </StyledMealTable>
         </StyledComp>
