@@ -10,6 +10,7 @@ const StyledTable = styled.table`
         ${props => props.size === 'small' ? 'padding: 4px 7px;' : ''};
         ${props => props.size === 'large' ? 'padding: 10px 15px;' : ''};
         border-right: 1px solid #CCC;
+        height: 1px;
     }
 
     thead {

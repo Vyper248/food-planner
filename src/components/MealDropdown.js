@@ -9,9 +9,14 @@ import BasicButton from './BasicButton';
 const StyledComp = styled.div`
     position: relative;
     transition: 0.3s;
+    height: 100%;
 
     & > div#name {
-        height: 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
         padding: 7px 10px;
         transition: 0.3s;
         border: 1px solid transparent;
@@ -22,6 +27,19 @@ const StyledComp = styled.div`
         :hover {
             cursor: pointer;
         }
+    }
+
+    & div#meal {
+        display: flex;
+        height: 100%;
+        align-items: center;
+    }
+
+    & div#calories {
+        font-size: 0.8em;
+        color: gray;
+        position: relative;
+        top: 5px;
     }
 
     & > div#name.switching {
@@ -73,7 +91,9 @@ const StyledComp = styled.div`
 `
 
 const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, moveUp, moveDown, onSwitchStart, onSwitchEnd}) => {
-    const { meals, switching, switchId, switchType, dispatch } = useContext(context);
+    const { meals, items, switching, switchId, switchType, planner, dispatch } = useContext(context);
+    let { showCalories } = planner;
+    // showCalories = false;
 
     //Add click outside event listener
     const ref = useRef(null);
@@ -92,7 +112,21 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
 
     const mealsOfType = meals.filter(meal => meal.type === type);
 
+    let totalCalories = 0;
     const thisMeal = meals.find(obj => obj.id === id);
+    if (thisMeal) {
+        const mealItems = thisMeal.itemList.map(item => {
+            let itemObj = items.find(obj => obj.id === item.id);
+            if (!itemObj) return {};
+            let copy = {...itemObj, qty: item.qty};
+            return copy;
+        });
+    
+        totalCalories = mealItems.reduce((a,c) => {
+            return a += parseInt(c.calories / c.size * c.qty);
+        }, 0);
+    }
+
 
     const getTypeKey = () => {
         let typeKey = 'breakfastId';
@@ -142,7 +176,10 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
 
     return (
         <StyledComp open={open}>
-            <div id='name' className={switchingClass} onClick={onClickName}>{thisMeal?.name}</div>
+            <div id='name' className={switchingClass} onClick={onClickName}>
+                <div id='meal'>{thisMeal?.name}</div>
+                { showCalories && totalCalories > 0 ? <div id='calories'>{totalCalories}kcal</div> : null }
+            </div>
             { open ? 
                 <div id='dropdown' ref={ref}>
                     <h4>Choose a Meal</h4>

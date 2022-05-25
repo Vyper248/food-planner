@@ -105,7 +105,7 @@ const organisePlanner = (planner) => {
 }
 
 const Home = () => {
-    const { planner, meals, switching, switchId, switchType, dispatch } = useContext(context);
+    const { planner, meals, switchId, switchType, dispatch } = useContext(context);
     const { days, startDay, people, showCalories, dailyMeals } = planner;
     const [ openId, setOpenId ] = useState(0);
 
@@ -115,6 +115,10 @@ const Home = () => {
 
     const onChangeDays = (value) => {
         dispatch({type: 'SET_DAYS', payload: value});
+    }
+
+    const onChangeShowCalories = (value) => {
+        dispatch({type: 'SET_SHOW_CALORIES', payload: value});
     }
 
     const breakfastMeals = meals.filter(meal => meal.type === 'Breakfast');
@@ -238,6 +242,7 @@ const Home = () => {
             <h3>Planner</h3>
             <Dropdown labelText='Start Day' value={startDay} options={daysOfWeek} onChange={onChangeStartDay}/>
             <Input type='number' labelText='Number of Days' value={days} onChange={onChangeDays} min={7} max={21}/>
+            <Input type='checkbox' labelText='Show Calories' value={showCalories} onChange={onChangeShowCalories}/>
             <br/>
             <StyledMealTable>
                 <thead>
