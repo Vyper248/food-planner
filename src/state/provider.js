@@ -9,7 +9,7 @@ const initialState = {
     planner: {
         days: 7,
         startDay: 'Monday',
-        numberPeople: 1,
+        people: 1,
         showCalories: true,
         dailyMeals: []
     },
@@ -25,7 +25,7 @@ const reducer = (state={}, action) => {
     switch(action.type) {
         case 'SET_DAYS': return {...state, planner: {...state.planner, days: value}};
         case 'SET_START_DAY': return {...state, planner: {...state.planner, startDay: value}};
-        case 'SET_NUMBER_PEOPLE': return {...state, planner: {...state.planner, numberPeople: value}};
+        case 'SET_NUMBER_PEOPLE': return {...state, planner: {...state.planner, people: value}};
         case 'SET_SHOW_CALORIES': return {...state, planner: {...state.planner, showCalories: value}};
         case 'SET_DAILY_MEALS': return {...state, planner: {...state.planner, dailyMeals: value}};
 
