@@ -20,7 +20,7 @@ const StyledComp = styled.div`
 `
 
 const Meals = () => {
-    const { meals, dispatch } = useContext(context);
+    const { meals, items, dispatch } = useContext(context);
     const [sort, setSort] = useState('Name');
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen, setAddOpen] = useState(false);
@@ -59,6 +59,27 @@ const Meals = () => {
         dispatch({type: 'DELETE_MEAL', payload: meal});
     }
 
+    const getCalories = (meal) => {
+        let totalCalories = 0;
+
+        const thisMeal = meals.find(obj => obj.id === meal.id);
+        if (thisMeal) {
+            const mealItems = thisMeal.itemList.map(item => {
+                let itemObj = items.find(obj => obj.id === item.id);
+                if (!itemObj) return {calories: 0};
+                let copy = {...itemObj, qty: item.qty};
+                return copy;
+            });
+        
+            totalCalories = mealItems.reduce((a,c) => {
+                if (c.calories === 0) return a;
+                return a += parseInt(c.calories / c.size * c.qty);
+            }, 0);
+        }
+
+        return totalCalories;
+    }
+
     let sortedMeals = sortArray(sort, meals);
 
     return (
@@ -76,7 +97,7 @@ const Meals = () => {
                             <Card key={meal.id}>
                                 <header>{meal.name}</header>
                                 <section>
-                                    <TableBasic data={[['Type', meal.type], ['Calories', 234]]}/>
+                                    <TableBasic data={[['Type', meal.type], ['Calories', getCalories(meal)]]}/>
                                 </section>
                                 <footer>
                                     <BasicButton label="Edit" onClick={openEditModal(meal)} width='80px' color='lightblue'/>

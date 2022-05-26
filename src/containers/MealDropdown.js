@@ -90,8 +90,8 @@ const StyledComp = styled.div`
 
 `
 
-const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, moveUp, moveDown, onSwitchStart, onSwitchEnd}) => {
-    const { meals, items, switching, switchId, switchType, planner, dispatch } = useContext(context);
+const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, moveUp, moveDown, onSwitchStart, onSwitchEnd, switching, switchId, switchType}) => {
+    const { meals, items, planner } = useContext(context);
     let { showCalories } = planner;
     // showCalories = false;
 

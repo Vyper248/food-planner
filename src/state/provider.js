@@ -11,7 +11,15 @@ const initialState = {
         startDay: 'Monday',
         people: 1,
         showCalories: true,
-        dailyMeals: []
+        dailyMeals: [[
+            {id: 1, day: 'Monday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+            {id: 2, day: 'Tuesday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+            {id: 3, day: 'Wednesday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+            {id: 4, day: 'Thursday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+            {id: 5, day: 'Friday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+            {id: 6, day: 'Saturday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+            {id: 7, day: 'Sunday', breakfastId: 0, lunchId: 0, dinnerId: 0},
+        ]]
     },
     switching: false,
     switchId: 0,
@@ -41,12 +49,18 @@ const reducer = (state={}, action) => {
         case 'EDIT_MEAL': return {...state, meals: editArray(value, state.meals)};
         case 'DELETE_MEAL': return {...state, meals: removeFromArray(value, state.meals)};
 
-        case 'EDIT_PLANNER_MEAL': return {...state, planner: {...state.planner, dailyMeals: editArray(value, state.planner.dailyMeals)}};
+        case 'EDIT_PLANNER_MEAL': return {...state, planner: {...state.planner, dailyMeals: editDailyMeals(value, state.planner.dailyMeals)}};
 
         case 'RESTORE_LOCAL': return {...state, ...value};
 
         default: return state;
     }
+}
+
+const editDailyMeals = (obj, arr) => {
+    return arr.map(peopleArr => {
+        return peopleArr.map(item => item.id === obj.id ? obj : item);
+    });
 }
 
 const addToArray = (obj, arr) => {

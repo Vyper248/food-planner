@@ -1,77 +1,24 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { TiArrowUnsorted } from 'react-icons/ti';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 import context from '../state/context';
 
 import StyledMealTable from '../components/Styled/StyledMealTable';
 import MealDropdown from '../containers/MealDropdown';
-import Dropdown from '../components/Dropdown';
-import Input from '../components/Input';
 import BasicButton from '../components/BasicButton';
 
 const StyledComp = styled.div`
 
 `
 
-const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-const getNextDay = (day) => {
-    let dayIndex = daysOfWeek.indexOf(day) + 1;
-    let nextDay = daysOfWeek[dayIndex%7];
-    return nextDay;
-}
-
-const getNextID = (dailyMeals) => {
-    if (dailyMeals.length === 0) return 1;
-
-    let highestID = dailyMeals.reduce((a,c) => {
-        if (c.id > a) return c.id;
-        return a;
-    }, 0);
-
-    if (highestID === undefined) return 1;
-
-    return highestID+1;
-}
-
-const addMeals = (planner) => {
-    let { days, startDay, dailyMeals } = planner;
-
-    if (days < 7) days = 7;
-
-    let currentDays = dailyMeals.length;
-    let latestMeal = dailyMeals[dailyMeals.length-1];
-    let latestDay = startDay;
-    let latestID = getNextID(dailyMeals);
-
-    if (latestMeal !== undefined) latestDay = getNextDay(latestMeal.day);
-
-    let newMeals = [...dailyMeals];
-    
-    for (let i = 0; i < days-currentDays; i++) {
-        newMeals.push({id: latestID, day: latestDay, breakfastId: 0, lunchId: 0, dinnerId: 0});
-        latestDay = getNextDay(latestDay);
-        latestID++;
-    }
-
-    return newMeals;
-}
-
-const trimMeals = (dailyMeals, days) => {
-    let newArray = [...dailyMeals];
-    if (newArray.length > days) {
-        if (days < 7) days = 7;
-        newArray = dailyMeals.slice(0,days);
-    }
-    return newArray;
-}
-
-const Planner = ({dailyMeals}) => {
-    const { planner, meals, switchId, switchType, dispatch } = useContext(context);
+const Planner = ({dailyMeals, allMeals}) => {
+    const { planner, meals, dispatch } = useContext(context);
     const { days } = planner;
     const [ openId, setOpenId ] = useState(0);
+    const [ switching, setSwitching ] = useState(false);
+    const [ switchId, setSwitchId] = useState(0);
+    const [ switchType, setSwitchType ] = useState('');
 
     const breakfastMeals = meals.filter(meal => meal.type === 'Breakfast');
     const lunchMeals = meals.filter(meal => meal.type === 'Lunch');
@@ -80,17 +27,6 @@ const Planner = ({dailyMeals}) => {
     breakfastMeals.unshift({id: 0, name: 'Empty'});
     lunchMeals.unshift({id: 0, name: 'Empty'});
     dinnerMeals.unshift({id: 0, name: 'Empty'});
-
-    //check to make sure displaying the correct number of days
-    useEffect(() => {
-        let newMeals = [];
-
-        if (dailyMeals.length < days) newMeals = addMeals(planner);
-        else if (dailyMeals.length > days) newMeals = trimMeals(dailyMeals, days);
-        else return;
-
-        dispatch({type: 'SET_DAILY_MEALS', payload: newMeals});
-    }, [days]);
 
     const onOpenMeal = (id) => () => {
         setOpenId(id);
@@ -108,15 +44,15 @@ const Planner = ({dailyMeals}) => {
     }
 
     const startSwitching = (dayId, type) => {
-        dispatch({type: 'SET_SWITCHING', payload: true});
-        dispatch({type: 'SET_SWITCH_ID', payload: dayId});
-        dispatch({type: 'SET_SWITCH_TYPE', payload: type});
+        setSwitching(true);
+        setSwitchId(dayId);
+        setSwitchType(type);
         onCloseMeal();
     }
 
     const endSwitching = (dayId, typeKey) => {
         if (switchId === dayId) {
-            dispatch({type: 'SET_SWITCHING', payload: false});
+            setSwitching(false);
             return;
         }
 
@@ -124,7 +60,7 @@ const Planner = ({dailyMeals}) => {
         let objB = dailyMeals.find(obj => obj.id === dayId);
 
         swapObjects(objA, objB, typeKey, switchType);
-        dispatch({type: 'SET_SWITCHING', payload: false});
+        setSwitching(false);
     }
 
     const moveUp = (objId, typeKey, type) => {
@@ -145,18 +81,27 @@ const Planner = ({dailyMeals}) => {
         swapObjects(objA, objB, typeKey, type);
     }
 
+    const getNewMealsArr = (newPersonMeals) => {
+        let index = allMeals.indexOf(dailyMeals);
+        let newArr = [...allMeals];
+        newArr[index] = newPersonMeals;
+        return newArr;
+    }
+
     const moveStartDayUp = () => {
         let newArray = [...dailyMeals];
         let lastItem = newArray.pop();
         newArray.unshift(lastItem);
-        dispatch({type: 'SET_DAILY_MEALS', payload: newArray});
+        let newMeals = getNewMealsArr(newArray);
+        dispatch({type: 'SET_DAILY_MEALS', payload: newMeals});
     }
 
     const moveStartDayDown = () => {
         let newArray = [...dailyMeals];
         let firstItem = newArray.shift();
         newArray.push(firstItem);
-        dispatch({type: 'SET_DAILY_MEALS', payload: newArray});
+        let newMeals = getNewMealsArr(newArray);
+        dispatch({type: 'SET_DAILY_MEALS', payload: newMeals});
     }
 
     const swapObjects = (objA, objB, typeKey, type) => {
@@ -189,6 +134,9 @@ const Planner = ({dailyMeals}) => {
                     moveDown={moveDown}
                     onSwitchStart={startSwitching}
                     onSwitchEnd={endSwitching}
+                    switching={switching}
+                    switchId={switchId}
+                    switchType={switchType}
                 />
     }
 
