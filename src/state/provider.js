@@ -37,6 +37,10 @@ const reducer = (state={}, action) => {
         case 'SET_SHOW_CALORIES': return {...state, planner: {...state.planner, showCalories: value}};
         case 'SET_DAILY_MEALS': return {...state, planner: {...state.planner, dailyMeals: value}};
 
+        case 'SET_SHOPPING_LIST_ITEM_TRUE': return {...state, shoppingList: updateShoppingList(state.shoppingList, value, true)};
+        case 'SET_SHOPPING_LIST_ITEM_FALSE': return {...state, shoppingList: updateShoppingList(state.shoppingList, value, false)};
+        case 'CLEAR_SHOPPING_LIST': return {...state, shoppingList: {}};
+
         case 'SET_SWITCHING': return {...state, switching: value};
         case 'SET_SWITCH_TYPE': return {...state, switchType: value};
         case 'SET_SWITCH_ID': return {...state, switchId: value};
@@ -55,6 +59,13 @@ const reducer = (state={}, action) => {
 
         default: return state;
     }
+}
+
+const updateShoppingList = (shoppingList, id, checked) => {
+    let newShoppingList = {...shoppingList};
+    newShoppingList[id] = checked;
+    if (checked === false) delete newShoppingList[id];
+    return newShoppingList;
 }
 
 const editDailyMeals = (obj, arr) => {

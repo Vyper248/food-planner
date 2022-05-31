@@ -4,9 +4,9 @@ import { useContext, useState, useEffect } from 'react';
 import context from '../state/context';
 
 import Container from '../components/Container';
-import List from '../components/List';
 import Input from '../components/Input';
 import StyledTable from '../components/Styled/StyledTable';
+import BasicButton from '../components/BasicButton';
 
 const StyledComp = styled.tr`
     width: 500px;
@@ -29,11 +29,12 @@ const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
 }
 
 const ShoppingList = () => {
-    const { planner, meals, items } = useContext(context);
+    const { planner, meals, items, shoppingList, dispatch } = useContext(context);
     const [ itemList, setItemList ] = useState([]);
 
     useEffect(() => {
         const listArr = getList(planner.dailyMeals);
+        checkIfChecked(listArr, shoppingList);
         setItemList(listArr);
     }, [planner]);
 
@@ -51,6 +52,12 @@ const ShoppingList = () => {
                 itemsNeeded[item.id] += item.qty;
             });
         }
+    }
+
+    const checkIfChecked = (listArr, shoppingList) => {
+        listArr.forEach(item => {
+            if (shoppingList[item.id] === true) item.checked = true;
+        });
     }
 
     const getQtyNeeded = (itemId, qty) => {
@@ -84,7 +91,20 @@ const ShoppingList = () => {
 
     const onCheckItem = (id) => () => {
         let listArr = itemList.map(item => {
-            if (item.id === id) item.checked = !item.checked;
+            if (item.id === id) {
+                item.checked = !item.checked;
+                if (item.checked) dispatch({type: 'SET_SHOPPING_LIST_ITEM_TRUE', payload: id});
+                else if (!item.checked) dispatch({type: 'SET_SHOPPING_LIST_ITEM_FALSE', payload: id});
+            }
+            return item;
+        });
+        setItemList(listArr);
+    }
+
+    const uncheckAllItems = () => {
+        dispatch({type: 'CLEAR_SHOPPING_LIST'});
+        let listArr = itemList.map(item => {
+            item.checked = false;
             return item;
         });
         setItemList(listArr);
@@ -94,6 +114,7 @@ const ShoppingList = () => {
         <div>
             <h3>Shopping List</h3>
             <Container>
+                <BasicButton label='Clear All' onClick={uncheckAllItems}/>
                 <StyledTable>
                     <thead>
                         <tr>
