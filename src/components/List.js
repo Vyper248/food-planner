@@ -38,10 +38,4 @@ const List = ({children, width='150px', heading=''}) => {
     );
 }
 
-const compareProps = (prev, next) => {
-    if (prev.width !== next.width) return false;
-    if (prev.heading !== next.heading) return false;
-    return true;
-}
-
-export default memo(List, compareProps);
+export default List;

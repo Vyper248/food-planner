@@ -24,6 +24,7 @@ const MenuBar = () => {
     return (
         <StyledComp>
             <Link to='/'>Home</Link>
+            <Link to='/shoppingList'>Shopping List</Link>
             <Link to='/items'>Items</Link>
             <Link to='/meals'>Meals</Link>
         </StyledComp>
