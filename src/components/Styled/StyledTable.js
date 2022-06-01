@@ -13,6 +13,10 @@ const StyledTable = styled.table`
         height: 1px;
     }
 
+    td.input {
+        padding: 0px;
+    }
+
     thead {
         th:first-child {
             border-top-left-radius: 5px;

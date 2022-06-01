@@ -7,6 +7,7 @@ import Container from '../components/Container';
 import Input from '../components/Input';
 import StyledTable from '../components/Styled/StyledTable';
 import BasicButton from '../components/BasicButton';
+import StockList from '../containers/StockList';
 
 const StyledComp = styled.tr`
     width: 500px;
@@ -29,14 +30,14 @@ const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
 }
 
 const ShoppingList = () => {
-    const { planner, meals, items, shoppingList, dispatch } = useContext(context);
+    const { planner, meals, items, shoppingList, stockList, dispatch } = useContext(context);
     const [ itemList, setItemList ] = useState([]);
 
     useEffect(() => {
         const listArr = getList(planner.dailyMeals);
         checkIfChecked(listArr, shoppingList);
         setItemList(listArr);
-    }, [planner]);
+    }, [planner, stockList]);
 
     const getMeal = (id) => {
         const meal = meals.find(meal => meal.id === id);
@@ -63,6 +64,9 @@ const ShoppingList = () => {
     const getQtyNeeded = (itemId, qty) => {
         let item = items.find(item => item.id === itemId);
         if (!item) return 0;
+
+        let stockItem = stockList.find(item => item.id === itemId);
+        if (stockItem) qty -= stockItem.stock;
 
         let qtyNeeded = qty / item.size;
         return {qty: Math.ceil(qtyNeeded), name: item.name, checked: false, id: itemId};
@@ -129,8 +133,8 @@ const ShoppingList = () => {
                     }
                     </tbody>
                 </StyledTable>
-            
             </Container>
+            <StockList/>
         </div>
     );
 }

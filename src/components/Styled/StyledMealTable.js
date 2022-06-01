@@ -14,6 +14,10 @@ const StyledMealTable = styled(StyledTable)`
     thead > tr > th:first-child {
         background-color: transparent;
         border: 1px solid transparent;
+
+        & > div {
+            height: 30px;
+        }
     }
 
     thead > tr > th:nth-child(2) {
@@ -50,6 +54,10 @@ const StyledMealTable = styled(StyledTable)`
         background-color: transparent;
         border: none;
         border-top: 1px solid #CCC;
+        
+        & > div {
+            height: 30px;
+        }
     }
 `
 

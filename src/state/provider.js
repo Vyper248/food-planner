@@ -21,15 +21,13 @@ const initialState = {
             {id: 7, day: 'Sunday', breakfastId: 0, lunchId: 0, dinnerId: 0},
         ]]
     },
-    switching: false,
-    switchId: 0,
-    switchType: '',
-    shoppingList: {}
+    shoppingList: {},
+    stockList: []
 };
 
 const reducer = (state={}, action) => {
     let value = action.payload;
-    console.log(action.type, value);
+    // console.log(action.type, value);
     switch(action.type) {
         case 'SET_DAYS': return {...state, planner: {...state.planner, days: value}};
         case 'SET_START_DAY': return {...state, planner: {...state.planner, startDay: value}};
@@ -41,9 +39,10 @@ const reducer = (state={}, action) => {
         case 'SET_SHOPPING_LIST_ITEM_FALSE': return {...state, shoppingList: updateShoppingList(state.shoppingList, value, false)};
         case 'CLEAR_SHOPPING_LIST': return {...state, shoppingList: {}};
 
-        case 'SET_SWITCHING': return {...state, switching: value};
-        case 'SET_SWITCH_TYPE': return {...state, switchType: value};
-        case 'SET_SWITCH_ID': return {...state, switchId: value};
+        case 'ADD_STOCK': return {...state, stockList: addToArray(value, state.stockList, true)};
+        case 'EDIT_STOCK': return {...state, stockList: editArray(value, state.stockList)};
+        case 'DELETE_STOCK': return {...state, stockList: removeFromArray(value, state.stockList)};
+        case 'CLEAR_STOCK': return {...state, stockList: []};
 
         case 'ADD_ITEM': return {...state, items: addToArray(value, state.items)};
         case 'EDIT_ITEM': return {...state, items: editArray(value, state.items)};
@@ -68,22 +67,22 @@ const updateShoppingList = (shoppingList, id, checked) => {
     return newShoppingList;
 }
 
-const editDailyMeals = (obj, arr) => {
+const editDailyMeals = (obj, arr=[]) => {
     return arr.map(peopleArr => {
         return peopleArr.map(item => item.id === obj.id ? obj : item);
     });
 }
 
-const addToArray = (obj, arr) => {
-    obj.id = getID();
+const addToArray = (obj, arr=[], ignoreId=false) => {
+    if (!ignoreId) obj.id = getID();
     return [...arr, obj];
 }
 
-const editArray = (obj, arr) => {
+const editArray = (obj, arr=[]) => {
     return arr.map(item => item.id === obj.id ? obj : item);
 }
 
-const removeFromArray = (obj, arr) => {
+const removeFromArray = (obj, arr=[]) => {
     return arr.filter(item => item.id === obj.id ? false : true);
 }
 

@@ -9,7 +9,7 @@ const StyledComp = styled.div`
     padding: 5px;
     margin: ${props => props.margin ? props.margin : '5px'};
     display: inline-block;
-    height: 30px;
+    height: 28px;
 
     & > svg {
         font-size: 1.5em;
