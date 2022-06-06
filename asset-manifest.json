@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/food-planner/static/css/main.b9d23aff.chunk.css",
-    "main.js": "/food-planner/static/js/main.227f8e08.chunk.js",
-    "main.js.map": "/food-planner/static/js/main.227f8e08.chunk.js.map",
+    "main.js": "/food-planner/static/js/main.2945beb2.chunk.js",
+    "main.js.map": "/food-planner/static/js/main.2945beb2.chunk.js.map",
     "runtime-main.js": "/food-planner/static/js/runtime-main.ad435186.js",
     "runtime-main.js.map": "/food-planner/static/js/runtime-main.ad435186.js.map",
-    "static/js/2.f4732be3.chunk.js": "/food-planner/static/js/2.f4732be3.chunk.js",
-    "static/js/2.f4732be3.chunk.js.map": "/food-planner/static/js/2.f4732be3.chunk.js.map",
+    "static/js/2.ac2e9195.chunk.js": "/food-planner/static/js/2.ac2e9195.chunk.js",
+    "static/js/2.ac2e9195.chunk.js.map": "/food-planner/static/js/2.ac2e9195.chunk.js.map",
     "static/js/3.9fd5fe94.chunk.js": "/food-planner/static/js/3.9fd5fe94.chunk.js",
     "static/js/3.9fd5fe94.chunk.js.map": "/food-planner/static/js/3.9fd5fe94.chunk.js.map",
     "index.html": "/food-planner/index.html",
     "static/css/main.b9d23aff.chunk.css.map": "/food-planner/static/css/main.b9d23aff.chunk.css.map",
-    "static/js/2.f4732be3.chunk.js.LICENSE.txt": "/food-planner/static/js/2.f4732be3.chunk.js.LICENSE.txt"
+    "static/js/2.ac2e9195.chunk.js.LICENSE.txt": "/food-planner/static/js/2.ac2e9195.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ad435186.js",
-    "static/js/2.f4732be3.chunk.js",
+    "static/js/2.ac2e9195.chunk.js",
     "static/css/main.b9d23aff.chunk.css",
-    "static/js/main.227f8e08.chunk.js"
+    "static/js/main.2945beb2.chunk.js"
   ]
 }
