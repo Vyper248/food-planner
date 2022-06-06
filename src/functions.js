@@ -8,3 +8,19 @@ export const sortArray = (sort, array) => {
     });
     return sortedItems;
 }
+
+export const organiseMeals = (meals) => {
+    let obj = {
+        breakfast: [],
+        lunch: [],
+        dinner: []
+    }
+
+    meals.forEach(meal => {
+        if (meal.type === 'Breakfast') obj.breakfast.push(meal);
+        if (meal.type === 'Lunch') obj.lunch.push(meal);
+        if (meal.type === 'Dinner') obj.dinner.push(meal);
+    });
+
+    return obj;
+}

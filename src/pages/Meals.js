@@ -1,34 +1,20 @@
-import styled from 'styled-components';
 import { useContext, useState } from 'react';
 
 import context from '../state/context';
-import { sortArray } from '../functions';
+import { organiseMeals } from '../functions';
 
-import Card from '../components/Card';
 import BasicButton from '../components/BasicButton';
-import TableBasic from '../components/TableBasic';
-import ConfirmButtonPopup from '../components/ConfirmButtonPopup';
-import Grid from '../components/Grid';
-import Dropdown from '../components/Dropdown';
 import Modal from '../components/Modal';
 import Container from '../components/Container';
+import MealGroup from '../containers/MealGroup';
 
 import AddEditMeal from '../containers/AddEditMeal';
 
-const StyledComp = styled.div`
-
-`
-
 const Meals = () => {
-    const { meals, items, dispatch } = useContext(context);
-    const [sort, setSort] = useState('Name');
+    const { meals, dispatch } = useContext(context);
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen, setAddOpen] = useState(false);
     const [mealToEdit, setMealToEdit] = useState(undefined);
-
-    const onChangeSort = (value) => {
-        setSort(value);
-    }
 
     const openEditModal = (meal) => () => {
         setMealToEdit(meal);
@@ -55,58 +41,16 @@ const Meals = () => {
         dispatch({type: 'EDIT_MEAL', payload: meal});
     }
 
-    const onDeleteItem = (meal) => () => {
-        dispatch({type: 'DELETE_MEAL', payload: meal});
-    }
-
-    const getCalories = (meal) => {
-        let totalCalories = 0;
-
-        const thisMeal = meals.find(obj => obj.id === meal.id);
-        if (thisMeal) {
-            const mealItems = thisMeal.itemList.map(item => {
-                let itemObj = items.find(obj => obj.id === item.id);
-                if (!itemObj) return {calories: 0};
-                let copy = {...itemObj, qty: item.qty};
-                return copy;
-            });
-        
-            totalCalories = mealItems.reduce((a,c) => {
-                if (c.calories === 0) return a;
-                return a += parseInt(c.calories / c.size * c.qty);
-            }, 0);
-        }
-
-        return totalCalories;
-    }
-
-    let sortedMeals = sortArray(sort, meals);
+    let organisedMeals = organiseMeals(meals);
 
     return (
-        <StyledComp>
+        <div>
             <h3>Meals</h3>
             <Container>
-                <Grid columnTemplate='1fr 1fr 1fr'>
-                    <div></div>
-                    <div><BasicButton label='Add New Meal' color='lightblue' onClick={openAddModal}/></div>
-                    <div><Dropdown labelText='Sort By' value={sort} options={['Name', 'Calories']} onChange={onChangeSort}/></div>
-                </Grid>
-                { 
-                    sortedMeals.map(meal => {
-                        return (
-                            <Card key={meal.id}>
-                                <header>{meal.name}</header>
-                                <section>
-                                    <TableBasic data={[['Type', meal.type], ['Calories', getCalories(meal)]]}/>
-                                </section>
-                                <footer>
-                                    <BasicButton label="Edit" onClick={openEditModal(meal)} width='80px' color='lightblue'/>
-                                    <ConfirmButtonPopup label="Delete" width='80px' color='red' onClick={onDeleteItem(meal)}/>
-                                </footer>
-                            </Card>
-                        );
-                    })
-                }
+                <BasicButton label='Add New Meal' color='lightblue' onClick={openAddModal}/>
+                <MealGroup heading='Breakfast' mealsInGroup={organisedMeals.breakfast} openEditModal={openEditModal}/>
+                <MealGroup heading='Lunch' mealsInGroup={organisedMeals.lunch} openEditModal={openEditModal}/>
+                <MealGroup heading='Dinner' mealsInGroup={organisedMeals.dinner} openEditModal={openEditModal}/>
             </Container>
             <Modal open={editOpen} closeFunc={closeModal}>
                 { editOpen ? <AddEditMeal meal={mealToEdit} onFinish={onChangeMeal} onCancel={closeModal}/> : null }
@@ -114,7 +58,7 @@ const Meals = () => {
             <Modal open={addOpen} closeFunc={closeModal}>
                 { addOpen ? <AddEditMeal onFinish={onAddMeal} onCancel={closeModal}/> : null }
             </Modal>
-        </StyledComp>
+        </div>
     );
 }
 
