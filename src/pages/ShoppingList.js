@@ -29,6 +29,25 @@ const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
     );
 }
 
+const ListTable = ({itemList, onCheckItem}) => {
+    return (
+        <StyledTable>
+            <thead>
+                <tr>
+                    <th style={{minWidth: '50px'}}></th>
+                    <th style={{minWidth: '60px'}}>Qty</th>
+                    <th>Item</th>
+                </tr>
+            </thead>
+            <tbody>
+            {
+                itemList.map(item => <ListItem key={'listItem-'+item.id} name={item.name} qty={item.qty} checked={item.checked} onClickCheckbox={onCheckItem(item.id)}/>)
+            }
+            </tbody>
+        </StyledTable>
+    );
+}
+
 const ShoppingList = () => {
     const { planner, meals, items, shoppingList, stockList, dispatch } = useContext(context);
     const [ itemList, setItemList ] = useState([]);
@@ -119,20 +138,9 @@ const ShoppingList = () => {
             <h3>Shopping List</h3>
             <Container>
                 <BasicButton label='Uncheck All' color='var(--button-color-caution)' onClick={uncheckAllItems}/>
-                <StyledTable>
-                    <thead>
-                        <tr>
-                            <th style={{minWidth: '50px'}}></th>
-                            <th style={{minWidth: '60px'}}>Qty</th>
-                            <th>Item</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        itemList.map(item => <ListItem key={'listItem-'+item.id} name={item.name} qty={item.qty} checked={item.checked} onClickCheckbox={onCheckItem(item.id)}/>)
-                    }
-                    </tbody>
-                </StyledTable>
+                {
+                    itemList.length > 0 ? <ListTable itemList={itemList} onCheckItem={onCheckItem}/> : <p>No Items Needed</p>
+                }
             </Container>
             <StockList/>
         </div>

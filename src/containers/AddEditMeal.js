@@ -11,6 +11,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     const [name, setName] = useState(meal.name || '');
     const [itemList, setItemList] = useState(meal.itemList || []);
     const [type, setType] = useState(meal.type || 'Dinner');
+    const [error, setError] = useState('');
 
     let filteredItems = items.filter(item => {
         if (itemList.find(obj => obj.id === item.id) !== undefined) return false;
@@ -21,8 +22,12 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
 
     if (editing && meal.name === undefined) return null;
 
-    const onChangeName = (value) => setName(value);
     const onChangeType = (value) => setType(value);
+
+    const onChangeName = (value) => {
+        setName(value);
+        setError('');
+    }
 
     const getMeasurementText = (itemId) => {
         let itemObj = items.find(obj => obj.id === itemId);
@@ -39,6 +44,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
             return obj;
         });
         setItemList(newItemList);
+        setError('');
     }
 
     const onChangeQty = (index) => (qty) => {
@@ -50,8 +56,16 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
     }
 
     const onSave = () => {
-        if (name === '') return;
-        if (itemList.length === 0) return;
+        if (name === '') {
+            setError('Please give the meal a name');
+            return;
+        }
+
+        if (itemList.length === 0) {
+            setError('Please add an item to the meal');
+            return;
+        }
+
         let newItem = {...meal, name, type, itemList};
         onFinish(newItem);
     }
@@ -60,6 +74,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
         let newObj = {id: firstItem, qty: 1};
         let newItemList = [...itemList, newObj];
         setItemList(newItemList);
+        setError('');
     }
 
     const onDeleteItem = (index) => () => {
@@ -88,7 +103,16 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                         );
                     })
                 }
-                <BasicButton label='Add New Item' color='lightblue' width='150px' onClick={onAddItem}/>
+                {
+                    items.length > 0 
+                        ? <BasicButton label='Add New Item' color='lightblue' width='150px' onClick={onAddItem}/>
+                        : <p>Please add an item before creating a meal</p> 
+                }
+                {
+                    error.length > 0
+                        ? <p style={{color: 'red'}}>{error}</p>
+                        : null
+                }
             </section>
             <footer>
                 <BasicButton label='Save' onClick={onSave}/>

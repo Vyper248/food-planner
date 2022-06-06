@@ -35,9 +35,12 @@ const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
     return (
         <div>
             <h4>{heading}</h4>
-        { 
-            mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getCalories={getCalories} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
-        }
+            { 
+                mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getCalories={getCalories} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+            }
+            { 
+                mealsInGroup.length === 0 ? <p>No Meals</p> : null
+            }
         </div>
     );
 }

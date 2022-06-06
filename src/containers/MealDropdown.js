@@ -198,6 +198,9 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
                         })
                     }
                     </List>
+                    {
+                        mealsOfType.length === 0 ? <div style={{marginBottom: '10px'}}>No Meals Created</div> : null
+                    }
                 </div> 
             : null }
         </StyledComp>
