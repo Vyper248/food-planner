@@ -16,7 +16,12 @@ const StyledComp = styled.div`
 
     & > a:hover {
         background-color: #EEE;
+    }
 
+    & > a.right {
+        float: right;
+        border-right: none;
+        border-left: 1px solid gray;
     }
 `
 
@@ -27,6 +32,7 @@ const MenuBar = () => {
             <Link to='/shoppingList'>Shopping List</Link>
             <Link to='/items'>Items</Link>
             <Link to='/meals'>Meals</Link>
+            <Link to='/settings' className='right'>Settings</Link>
         </StyledComp>
     );
 }
