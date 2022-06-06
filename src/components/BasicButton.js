@@ -12,9 +12,9 @@ const StyledComp = styled.div`
     height: 28px;
 
     & > svg {
-        font-size: 1.5em;
+        font-size: ${props => props.iconSize};
         position: relative;
-        top: -2px;
+        top: ${props => props.iconTop};
     }
 
     &:hover {
@@ -23,13 +23,15 @@ const StyledComp = styled.div`
     }
 `;
 
-const BasicButton = ({label='', onClick=()=>{}, color='#CCC', textColor, width, margin}) => {
+const BasicButton = ({label='', onClick=()=>{}, color='#CCC', textColor, width, margin, iconSize='1.5em', iconTop='0px'}) => {
     return (
         <StyledComp 
             color={color} 
             textColor={textColor}
             width={width} 
-            margin={margin} 
+            margin={margin}
+            iconSize={iconSize} 
+            iconTop={iconTop}
             onClick={onClick}>{label}</StyledComp>
     );
 }

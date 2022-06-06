@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { FaTrashAlt } from 'react-icons/fa';
 
 import context from '../state/context';
 
@@ -67,8 +68,8 @@ const StockList = () => {
             <Container>
                 <div>
                     <Dropdown labelText='Item' value={itemToAdd} options={filteredItems.map(item => ({value: item.id, display: item.name}))} onChange={setItemToAdd}/>
-                    <BasicButton label='Add' onClick={onAddItem}/>
-                    <BasicButton label='Clear Stock' onClick={onClearStock}/>
+                    <BasicButton label='Add' color='var(--button-color-normal)' onClick={onAddItem}/>
+                    <BasicButton label='Clear Stock' color='var(--button-color-caution)' onClick={onClearStock}/>
                 </div>
                 <br/>
                 <div>After adding an item, input the current quantity of individual items (or weight)</div>
@@ -82,7 +83,7 @@ const StockList = () => {
                                     <td className='input'><Input type='number' width='60' value={item.stock} onChange={onChangeStock(item.id)}/></td>
                                     <td style={{minWidth: '61px'}}>{item.measurement}</td>
                                     <td style={{minWidth: '200px'}}>{item.name}</td>
-                                    <td className='input'><BasicButton label='Remove' width='80px' onClick={onRemoveStock(item.id)}/></td>
+                                    <td className='input'><BasicButton label={<FaTrashAlt/>} width='50px' iconSize='1.2em' color='var(--button-color-caution)' onClick={onRemoveStock(item.id)}/></td>
                                 </tr>
                             )
                         })

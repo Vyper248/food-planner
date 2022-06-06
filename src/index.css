@@ -1,8 +1,23 @@
+:root {
+  --button-color-normal: #a3d5f7;
+  --button-color-caution: #ff6161;
+  --button-color-success: lightgreen;
+  --menu-background-color: #EEE;
+  --menu-border-color: gray;
+  --menu-selected-color: #BBB;
+  --background-color: white;
+
+  --menu-background-color: #a3d5f7;
+  --menu-border-color: #67bbf5;
+  --menu-selected-color: #67bbf5;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
+  background-color: var(--background-color);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

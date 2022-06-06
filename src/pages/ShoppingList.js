@@ -118,7 +118,7 @@ const ShoppingList = () => {
         <div>
             <h3>Shopping List</h3>
             <Container>
-                <BasicButton label='Clear All' onClick={uncheckAllItems}/>
+                <BasicButton label='Uncheck All' color='var(--button-color-caution)' onClick={uncheckAllItems}/>
                 <StyledTable>
                     <thead>
                         <tr>

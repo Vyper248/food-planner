@@ -113,7 +113,7 @@ const StyledComp = styled.div`
     }
 
     & .confirm {
-        background-color: lightgreen !important;
+        background-color: var(--button-color-success) !important;
     }
 
     & > .confirmation > div:first-of-type {

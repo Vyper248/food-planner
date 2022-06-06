@@ -83,7 +83,7 @@ const Items = () => {
             <Container>
                 <Grid columnTemplate='1fr 1fr 1fr'>
                     <div></div>
-                    <div><BasicButton label='Add New Item' color='lightblue' onClick={openAddModal}/></div>
+                    <div><BasicButton label='Add New Item' color='var(--button-color-normal)' onClick={openAddModal}/></div>
                     <div><Dropdown labelText='Sort By' value={sort} options={['Name', 'Calories', 'Size']} onChange={onChangeSort}/></div>
                 </Grid>
                 { 
@@ -95,9 +95,9 @@ const Items = () => {
                                     <TableBasic data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>
                                 </section>
                                 <footer>
-                                    <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='lightblue'/>
+                                    <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='var(--button-color-normal)'/>
                                     {
-                                        checkIfCanDelete(item) ? <ConfirmButtonPopup label="Delete" width='80px' color='red' onClick={onDeleteItem(item)}/>
+                                        checkIfCanDelete(item) ? <ConfirmButtonPopup label="Delete" width='80px' color='var(--button-color-caution)' onClick={onDeleteItem(item)}/>
                                                                : null
                                     }
                                 </footer>

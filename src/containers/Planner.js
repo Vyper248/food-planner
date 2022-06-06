@@ -150,7 +150,7 @@ const Planner = ({dailyMeals, allMeals}) => {
             <StyledMealTable>
                 <thead>
                     <tr>
-                        <th><BasicButton label={<FiChevronUp/>} width='50px' onClick={moveStartDayUp}/></th>
+                        <th><BasicButton label={<FiChevronUp/>} width='50px' iconTop='-2px' onClick={moveStartDayUp}/></th>
                         <th>Breakfast</th>
                         <th>Lunch</th>
                         <th>Dinner</th>
@@ -170,7 +170,7 @@ const Planner = ({dailyMeals, allMeals}) => {
                     })
                 }
                     <tr className='hidden'>
-                        <td><BasicButton label={<FiChevronDown/>} width='50px' onClick={moveStartDayDown}/></td>
+                        <td><BasicButton label={<FiChevronDown/>} width='50px' iconTop='-2px' onClick={moveStartDayDown}/></td>
                         <td></td>
                         <td></td>
                         <td></td>

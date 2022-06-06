@@ -11,8 +11,8 @@ const MealCard = ({meal, getCalories, openEditModal, onDeleteItem}) => {
                 <TableBasic data={[['Type', meal.type], ['Calories', getCalories(meal)]]}/>
             </section>
             <footer>
-                <BasicButton label="Edit" onClick={openEditModal(meal)} width='80px' color='lightblue'/>
-                <ConfirmButtonPopup label="Delete" width='80px' color='red' onClick={onDeleteItem(meal)}/>
+                <BasicButton label="Edit" onClick={openEditModal(meal)} width='80px' color='var(--button-color-normal)'/>
+                <ConfirmButtonPopup label="Delete" width='80px' color='var(--button-color-caution)' onClick={onDeleteItem(meal)}/>
             </footer>
         </Card>
     );
