@@ -20,7 +20,7 @@ const StyledComp = styled.div`
 `
 
 const Items = () => {
-    const { items, dispatch } = useContext(context);
+    const { items, meals, dispatch } = useContext(context);
     const [sort, setSort] = useState('Name');
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen, setAddOpen] = useState(false);
@@ -59,6 +59,22 @@ const Items = () => {
         dispatch({type: 'DELETE_ITEM', payload: item});
     }
 
+    const checkIfCanDelete = (item) => {
+        let canDelete = true;
+
+        for (let i = 0; i < meals.length; i++) {
+            const meal = meals[i];
+            const itemList = meal.itemList;
+
+            if (itemList.find(itemObj => itemObj.id === item.id) !== undefined) {
+                canDelete = false;
+                break;
+            }
+        }
+
+        return canDelete;
+    }
+
     let sortedItems = sortArray(sort, items);
     
     return (
@@ -80,12 +96,16 @@ const Items = () => {
                                 </section>
                                 <footer>
                                     <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='lightblue'/>
-                                    <ConfirmButtonPopup label="Delete" width='80px' color='red' onClick={onDeleteItem(item)}/>
+                                    {
+                                        checkIfCanDelete(item) ? <ConfirmButtonPopup label="Delete" width='80px' color='red' onClick={onDeleteItem(item)}/>
+                                                               : null
+                                    }
                                 </footer>
                             </Card>
                         );
                     })
                 }
+                <p>Note: You can't delete an item being used in a meal.</p>
             </Container>
             <Modal open={editOpen} closeFunc={closeModal}>
                 { editOpen ? <AddEditItem item={itemToEdit} editing={true} onFinish={onChangeItem} onCancel={closeModal}/> : null }
