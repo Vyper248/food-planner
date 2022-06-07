@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 
 import context from '../state/context';
 
+import { sortArray } from '../functions';
+
 import BasicButton from '../components/BasicButton';
 import Dropdown from '../components/Dropdown';
 import Input from '../components/Input';
@@ -82,6 +84,8 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
         setItemList(newItemList);
     }
 
+    const sortedItems = sortArray('Name', items);
+
     return (
         <>
             <header style={{fontWeight: 'bold'}}>
@@ -95,7 +99,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                         let measurement = getMeasurementText(item.id);
                         return (
                             <div key={`itemList-${i}`}>
-                                <Dropdown labelText='Item' width='150' value={item.id} options={items.map( item => ({value: item.id, display: `${item.name} (${item.size}${item.measurement})`}) )} onChange={onChangeItem(i)}/>
+                                <Dropdown labelText='Item' width='150' value={item.id} options={sortedItems.map( item => ({value: item.id, display: `${item.name} (${item.size}${item.measurement})`}) )} onChange={onChangeItem(i)}/>
                                 <Input type='number' labelText={measurement} labelWidth='100' width='70' value={item.qty} onChange={onChangeQty(i)}/>
                                 <BasicButton label='Del' width='50px' onClick={onDeleteItem(i)}/>
                                 <br/>
