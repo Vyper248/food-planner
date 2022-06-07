@@ -2,9 +2,12 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 const StyledComp = styled.div`
+    position: sticky;
+    top: 0px;
     border-bottom: 1px solid var(--menu-border-color);
     background-color: var(--menu-background-color);
     text-align: left;
+    z-index: 2;
 
     & > a {
         display: inline-block;
