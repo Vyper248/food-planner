@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import context from '../state/context';
 
+import { sortArray } from '../functions';
+
 import List from '../components/List';
 import BasicButton from '../components/BasicButton';
 
@@ -111,6 +113,7 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
     }, [ref, open]);
 
     const mealsOfType = meals.filter(meal => meal.type === type);
+    const sortedMealsOfType = sortArray('Name', mealsOfType);
 
     let totalCalories = 0;
     const thisMeal = meals.find(obj => obj.id === id);
@@ -191,7 +194,7 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
                     </div>
                     <List>
                     {
-                        mealsOfType.map((obj,i) => {
+                        sortedMealsOfType.map((obj,i) => {
                             return (
                                 <li key={obj.id} onClick={onClickMeal(obj.id)}>{obj.name}</li>
                             );
@@ -199,7 +202,7 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
                     }
                     </List>
                     {
-                        mealsOfType.length === 0 ? <div style={{marginBottom: '10px'}}>No Meals Created</div> : null
+                        sortedMealsOfType.length === 0 ? <div style={{marginBottom: '10px'}}>No Meals Created</div> : null
                     }
                 </div> 
             : null }
