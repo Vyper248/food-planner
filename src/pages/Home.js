@@ -1,13 +1,19 @@
-import { useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
 import context from '../state/context';
 
 import Input from '../components/Input';
 import Planner from '../containers/Planner';
+import BasicButton from '../components/BasicButton';
+import ConfirmationPopup from '../components/ConfirmationPopup';
+
 
 const StyledComp = styled.div`
-
+    & div#weekDiv {
+        display: inline-block;
+        position: relative;
+    }
 `
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -76,11 +82,29 @@ const getBlankMealPlanner = (firstDay, days, dailyMeals) => {
 const Home = () => {
     const { planner, dispatch } = useContext(context);
     const { days, people, showCalories, dailyMeals } = planner;
+    const [ weekWarning, setWeekWarning ] = useState({show: false, value: 1});
 
     const onChangeDays = (value) => {
         if (value > 3) value = 3;
         if (value < 1) value = 1;
+
+        //warn if going to change down, because it will remove items
+        if (value < days/7) {
+            setWeekWarning({show: true, value: value});
+            return;
+        }
+
         dispatch({type: 'SET_DAYS', payload: value*7});
+    }
+
+    const onConfirmWeekChange = () => {
+        let value = weekWarning.value;
+        dispatch({type: 'SET_DAYS', payload: value*7});
+        setWeekWarning({show: false, value: 1});
+    }
+
+    const onCancelWeekChange = () => {
+        setWeekWarning({show: false, value: 1});
     }
 
     const onChangeShowCalories = (value) => {
@@ -128,7 +152,18 @@ const Home = () => {
     return (
         <StyledComp>
             <h3>Planner</h3>
-            <Input type='number' labelText='Number of Weeks' value={days/7} onChange={onChangeDays} min={1} max={3}/>
+            <div id='weekDiv'>
+                <Input type='number' labelText='Number of Weeks' value={days/7} onChange={onChangeDays} min={1} max={3}/>
+                {
+                    weekWarning.show === true 
+                        ? <ConfirmationPopup 
+                                message='Doing this will permanently remove any meals in the week being removed. Are you sure you want to continue?'
+                                onConfirm={onConfirmWeekChange} 
+                                onCancel={onCancelWeekChange}
+                            />  
+                        : <div></div>
+                }
+            </div>
             <Input type='number' labelText='Number of People' value={people} onChange={onChangePeople} min={1} max={3}/>
             <Input type='checkbox' labelText='Show Calories' value={showCalories} onChange={onChangeShowCalories}/>
             <br/>

@@ -7,7 +7,7 @@ const StyledComp = styled.div`
     border-bottom: 1px solid var(--menu-border-color);
     background-color: var(--menu-background-color);
     text-align: left;
-    z-index: 2;
+    z-index: 5;
 
     & > a {
         display: inline-block;
