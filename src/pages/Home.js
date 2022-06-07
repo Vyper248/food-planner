@@ -14,6 +14,12 @@ const StyledComp = styled.div`
         display: inline-block;
         position: relative;
     }
+    
+    & div#plannerDiv {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 `
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -167,11 +173,13 @@ const Home = () => {
             <Input type='number' labelText='Number of People' value={people} onChange={onChangePeople} min={1} max={3}/>
             <Input type='checkbox' labelText='Show Calories' value={showCalories} onChange={onChangeShowCalories}/>
             <br/>
-            {
-                dailyMeals.map((personMeals, i) => {
-                    return (<div key={'planner-'+i}><Planner dailyMeals={personMeals} allMeals={dailyMeals}/></div>)
-                })
-            }
+            <div id='plannerDiv'>
+                {
+                    dailyMeals.map((personMeals, i) => {
+                        return (<div key={'planner-'+i}><Planner dailyMeals={personMeals} allMeals={dailyMeals}/></div>)
+                    })
+                }
+            </div>
         </StyledComp>
     );
 }

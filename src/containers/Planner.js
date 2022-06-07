@@ -9,7 +9,7 @@ import MealDropdown from '../containers/MealDropdown';
 import BasicButton from '../components/BasicButton';
 
 const StyledComp = styled.div`
-
+    margin: 0px 20px;
 `
 
 const Planner = ({dailyMeals, allMeals}) => {
