@@ -20,6 +20,7 @@ const StyledComp = styled.tr`
 `
 
 const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
+    if (qty === 0) return null;
     return (
         <StyledComp>
             <td id='checkbox'><Input type='checkbox' value={checked} onChange={onClickCheckbox}/></td>

@@ -9,6 +9,7 @@ import Dropdown from '../components/Dropdown';
 import BasicButton from '../components/BasicButton';
 import StyledTable from '../components/Styled/StyledTable';
 import Input from '../components/Input';
+import { sortArray } from '../functions';
 
 const StyledComp = styled.div`
     & tr {
@@ -29,10 +30,12 @@ const StockList = () => {
             return true;
         });
 
-        const first = filtered[0]?.id;
+        const sorted = sortArray('Name', filtered);
+
+        const first = sorted[0]?.id;
         setItemToAdd(first);
 
-        setFilteredItems(filtered);
+        setFilteredItems(sorted);
     }, [stockList, items]);
 
     const onAddItem = () => {
