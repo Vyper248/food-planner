@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/food-planner/static/css/main.4973a8f7.chunk.css",
-    "main.js": "/food-planner/static/js/main.e04c1d0a.chunk.js",
-    "main.js.map": "/food-planner/static/js/main.e04c1d0a.chunk.js.map",
+    "main.js": "/food-planner/static/js/main.e00f5f89.chunk.js",
+    "main.js.map": "/food-planner/static/js/main.e00f5f89.chunk.js.map",
     "runtime-main.js": "/food-planner/static/js/runtime-main.768047df.js",
     "runtime-main.js.map": "/food-planner/static/js/runtime-main.768047df.js.map",
     "static/js/2.b6bf850a.chunk.js": "/food-planner/static/js/2.b6bf850a.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.768047df.js",
     "static/js/2.b6bf850a.chunk.js",
     "static/css/main.4973a8f7.chunk.css",
-    "static/js/main.e04c1d0a.chunk.js"
+    "static/js/main.e00f5f89.chunk.js"
   ]
 }
