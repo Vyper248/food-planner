@@ -16,7 +16,10 @@ import Container from '../components/Container';
 import AddEditItem from '../containers/AddEditItem';
 
 const StyledComp = styled.div`
-
+    & div#itemContainer {
+        display: flex;
+        flex-wrap: wrap;
+    }
 `
 
 const Items = () => {
@@ -86,25 +89,27 @@ const Items = () => {
                     <div><BasicButton label='Add New Item' color='var(--button-color-normal)' onClick={openAddModal}/></div>
                     <div><Dropdown labelText='Sort By' value={sort} options={['Name', 'Calories', 'Size']} onChange={onChangeSort}/></div>
                 </Grid>
-                { 
-                    sortedItems.map(item => {
-                        return (
-                            <Card key={item.id}>
-                                <header>{item.name}</header>
-                                <section>
-                                    <TableBasic data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>
-                                </section>
-                                <footer>
-                                    <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='var(--button-color-normal)'/>
-                                    {
-                                        checkIfCanDelete(item) ? <ConfirmButtonPopup label="Delete" width='80px' color='var(--button-color-caution)' onClick={onDeleteItem(item)}/>
-                                                               : null
-                                    }
-                                </footer>
-                            </Card>
-                        );
-                    })
-                }
+                <div id='itemContainer'>
+                    { 
+                        sortedItems.map(item => {
+                            return (
+                                <Card key={item.id} width='180px'>
+                                    <header>{item.name}</header>
+                                    <section>
+                                        <TableBasic data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>
+                                    </section>
+                                    <footer>
+                                        <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='var(--button-color-normal)'/>
+                                        {
+                                            checkIfCanDelete(item) ? <ConfirmButtonPopup label="Delete" width='80px' color='var(--button-color-caution)' onClick={onDeleteItem(item)}/>
+                                                                : null
+                                        }
+                                    </footer>
+                                </Card>
+                            );
+                        })
+                    }
+                </div>
                 <p>Note: You can't delete an item being used in a meal.</p>
             </Container>
             <Modal open={editOpen} closeFunc={closeModal}>

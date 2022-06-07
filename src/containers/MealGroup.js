@@ -1,8 +1,17 @@
+import styled from 'styled-components';
 import { useContext } from 'react';
 
 import context from '../state/context';
 
 import MealCard from './MealCard';
+
+const StyledComp = styled.div`
+    & div#mealContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+`;
 
 const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
     const { meals, items, dispatch } = useContext(context);
@@ -33,15 +42,17 @@ const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
     }
 
     return (
-        <div>
+        <StyledComp>
             <h4>{heading}</h4>
-            { 
-                mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getCalories={getCalories} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
-            }
+            <div id='mealContainer'>
+                { 
+                    mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getCalories={getCalories} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+                }
+            </div>
             { 
                 mealsInGroup.length === 0 ? <p>No Meals</p> : null
             }
-        </div>
+        </StyledComp>
     );
 }
 

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const StyledComp = styled.div`
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
     margin: 5px;
     background-color: #FFF;
     border: 1px solid #AAA;
@@ -13,6 +14,12 @@ const StyledComp = styled.div`
         font-weight: bold;
         padding: 10px;
         border-bottom: 1px solid #AAA;
+    }
+
+    & section {
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
     }
 
     & footer {

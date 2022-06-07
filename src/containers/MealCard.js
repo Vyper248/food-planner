@@ -5,7 +5,7 @@ import BasicButton from '../components/BasicButton';
 
 const MealCard = ({meal, getCalories, openEditModal, onDeleteItem}) => {
     return (
-        <Card key={meal.id}>
+        <Card key={meal.id} width='200px'>
             <header>{meal.name}</header>
             <section>
                 <TableBasic data={[['Type', meal.type], ['Calories', getCalories(meal)]]}/>
