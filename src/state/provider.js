@@ -96,13 +96,13 @@ const getID = () => {
 }
 
 //restoring state from local storage
-const getFromLocalStorage = (initialValue = initialState) => {
+const getFromLocalStorage = () => {
     let restoredState = localStorage.getItem('food-planner-state');
-    if (!restoredState) restoredState = initialValue;
+    if (!restoredState) restoredState = initialState;
     else restoredState = JSON.parse(restoredState);
 
     if (restoredState.planner === undefined) restoredState.planner = {};
-    restoredState.planner = {...initialValue.planner, ...restoredState.planner};
+    restoredState.planner = {...initialState.planner, ...restoredState.planner};
 
     restoredState.switching = false;
 
