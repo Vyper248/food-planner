@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect } from 'react';
+import { useContext, useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import context from '../state/context';
@@ -82,6 +82,8 @@ const StyledComp = styled.div`
 
         ul {
             width: calc(100% - 10px);
+            max-height: 260px;
+            overflow: scroll;
 
             li:hover {
                 cursor: pointer;
@@ -90,10 +92,16 @@ const StyledComp = styled.div`
         }
     }
 
+    & > div#dropdown.above {
+        top: auto;
+        bottom: calc(100% - 1px);
+    }
+
 `
 
 const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, moveUp, moveDown, onSwitchStart, onSwitchEnd, switching, switchId, switchType}) => {
     const { meals, items, planner } = useContext(context);
+    const [ positionAbove, setPositionAbove ] = useState(false);
     let { showCalories } = planner;
     // showCalories = false;
 
@@ -162,7 +170,18 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
         moveDown(dayId, getTypeKey(), type);
     }
 
-    const onClickName = () => {
+    const onClickName = (e) => {
+        //When clicking item, check whether popup needs to be above or below the item, defaulting to below
+        if (!open) {
+            let rect = e.target.getBoundingClientRect();
+            let bottom = rect.bottom;
+            let listHeight = sortedMealsOfType.length * 30;
+            listHeight = listHeight > 260 ? 260 : listHeight;
+    
+            if (bottom > window.innerHeight - 90 - listHeight) setPositionAbove(true);
+            else setPositionAbove(false);
+        }
+
         if (switching && type === switchType) {
             onSwitchEnd(dayId, getTypeKey());
             onClose();
@@ -184,7 +203,7 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
                 { showCalories && totalCalories > 0 ? <div id='calories'>{totalCalories}kcal</div> : null }
             </div>
             { open ? 
-                <div id='dropdown' ref={ref}>
+                <div id='dropdown' className={positionAbove ? 'above' : ''} ref={ref}>
                     <h4>Choose a Meal</h4>
                     <div>
                         <BasicButton label='Up' onClick={onUp} width='50px'/>
