@@ -22,6 +22,7 @@ const StyledComp = styled.div`
     }
 
     & > #uploadButton {
+        color: black;
         display: inline-block;
         height: 28px;
         padding: 5px 10px;

@@ -13,7 +13,7 @@ const StyledComp = styled.div`
         display: inline-block;
         padding: 5px 10px;
         text-decoration: none;
-        color: black;
+        color: var(--text-color);
         border-right: 1px solid var(--menu-border-color);
     }
 

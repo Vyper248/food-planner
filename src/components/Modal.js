@@ -20,7 +20,7 @@ const StyledComp = styled.div`
 
     & > #content {
         position: fixed;
-        background-color: #FFF;
+        background-color: var(--background-color);
         border: 1px solid #AAA;
         border-radius: 5px;
         width: ${props => props.width};
@@ -30,7 +30,7 @@ const StyledComp = styled.div`
         transform: ${props => props.open ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)'};
         z-index: 11;
         transition: 0.4s;
-        box-shadow: 2px 2px 10px #666;
+        box-shadow: 2px 2px 10px #888;
     }
 
     & section {

@@ -50,17 +50,18 @@ const StyledComp = styled.div`
         outline-offset: -3px;
 
         :hover {
-            background-color: #CCC;
+            background-color: var(--menu-selected-color);
         }
     }
 
     & > div#name.switchTarget {
-        border: 1px solid blue;
+        background-color: var(--menu-selected-color);
+        /* border: 2px solid var(--menu-background-color); */
         transition: 0.3s;
     }
 
     & > div.notSwitching {
-        background-color: #DDD;
+        background-color: var(--table-dim-color);
         color: #AAA;
         cursor: not-allowed !important;
         transition: 0.3s;
@@ -68,8 +69,8 @@ const StyledComp = styled.div`
 
     & > div#dropdown {
         position: absolute;
-        background-color: white;
-        border: 1px solid blue;
+        background-color: var(--background-color);
+        border: 1px solid var(--menu-border-color);
         width: 300px;
         left: 50%;
         top: calc(100% - 1px);
@@ -84,10 +85,11 @@ const StyledComp = styled.div`
             width: calc(100% - 10px);
             max-height: 260px;
             overflow: scroll;
+            background-color: var(--menu-background-color);
 
             li:hover {
                 cursor: pointer;
-                background-color: #EEE;
+                background-color: var(--menu-selected-color);
             }
         }
     }
@@ -207,10 +209,10 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
                 <div id='dropdown' className={positionAbove ? 'above' : ''} ref={ref}>
                     <h4>Choose a Meal</h4>
                     <div>
-                        <BasicButton label='Up' onClick={onUp} width='50px'/>
-                        <BasicButton label='Down' onClick={onDown} width='60px'/>
-                        <BasicButton label='Switch' onClick={onClickSwitch} width='70px'/>
-                        <BasicButton label='Clear' onClick={onClearMeal} width='70px'/>
+                        <BasicButton label='Up' onClick={onUp} width='50px' color='var(--button-color-normal)'/>
+                        <BasicButton label='Down' onClick={onDown} width='60px' color='var(--button-color-normal)'/>
+                        <BasicButton label='Switch' onClick={onClickSwitch} width='70px' color='var(--button-color-normal)'/>
+                        <BasicButton label='Clear' onClick={onClearMeal} width='70px' color='var(--button-color-normal)'/>
                     </div>
                     <List>
                     {

@@ -3,6 +3,8 @@ import { format } from "date-fns";
 
 import Context from "./context";
 
+import { setColorScheme } from "../functions";
+
 const initialState = {
     meals: [],
     items: [],
@@ -22,7 +24,8 @@ const initialState = {
         ]]
     },
     shoppingList: {},
-    stockList: []
+    stockList: [],
+    colorScheme: 'Blue'
 };
 
 const reducer = (state={}, action) => {
@@ -53,6 +56,8 @@ const reducer = (state={}, action) => {
         case 'DELETE_MEAL': return {...state, meals: removeFromArray(value, state.meals)};
 
         case 'EDIT_PLANNER_MEAL': return {...state, planner: {...state.planner, dailyMeals: editDailyMeals(value, state.planner.dailyMeals)}};
+
+        case 'SET_COLOR_SCHEME': return {...state, colorScheme: value};
 
         case 'RESTORE_LOCAL': return {...state, ...value};
 
@@ -93,13 +98,15 @@ const getID = () => {
 //restoring state from local storage
 const getFromLocalStorage = (initialValue = initialState) => {
     let restoredState = localStorage.getItem('food-planner-state');
-    if (!restoredState) restoredState = initialState;
+    if (!restoredState) restoredState = initialValue;
     else restoredState = JSON.parse(restoredState);
 
     if (restoredState.planner === undefined) restoredState.planner = {};
-    restoredState.planner = {...initialState.planner, ...restoredState.planner};
+    restoredState.planner = {...initialValue.planner, ...restoredState.planner};
 
     restoredState.switching = false;
+
+    setColorScheme(restoredState.colorScheme);
 
     return restoredState;
 }

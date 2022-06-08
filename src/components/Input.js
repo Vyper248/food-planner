@@ -36,6 +36,8 @@ const StyledComp = styled.div`
         border-radius: 5px;
         width: ${props => props.width+'px'};
         ${props => props.labelText ? 'border-radius: 0px 5px 5px 0px;' : ''};
+        background-color: var(--background-color);
+        color: var(--text-color);
     }
 
     & > input:focus {

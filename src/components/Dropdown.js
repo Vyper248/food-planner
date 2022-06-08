@@ -32,7 +32,8 @@ const StyledComp = styled.div`
 
     & > select {
         border: 1px solid #DDD;
-        background-color: white;
+        background-color: var(--background-color);
+        color: var(--text-color);
         -webkit-appearance:none;
         height: 100%;
         margin: 0px;
@@ -51,7 +52,7 @@ const StyledComp = styled.div`
         position: absolute;
         right: 8px;
         top: calc(50% - 5px);
-        border-top: 10px solid black;
+        border-top: 10px solid var(--text-color);
         border-left: 6px solid transparent;
         border-right: 6px solid transparent;
     }

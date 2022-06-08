@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import getContrastYIQ from '../colorFunction';
+
 const StyledComp = styled.div`
     background-color: ${props => props.color};
     color: ${props => props.textColor ? props.textColor : 'black'};
@@ -24,6 +26,14 @@ const StyledComp = styled.div`
 `;
 
 const BasicButton = ({label='', onClick=()=>{}, color='#CCC', textColor, width, margin, iconSize='1.5em', iconTop='0px'}) => {
+    if (color.includes('var(')) {
+        let propertyName = color.replace('var(', '').replace(')','');
+        let hex = getComputedStyle(document.documentElement).getPropertyValue(propertyName);
+        if (textColor === undefined && color !== '#CCC') textColor = getContrastYIQ(hex);
+    } else {
+        if (textColor === undefined && color !== '#CCC') textColor = getContrastYIQ(color);
+    }
+    
     return (
         <StyledComp 
             color={color} 
