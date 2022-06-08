@@ -27,7 +27,7 @@ const ItemCard = ({item, openEditModal, onDeleteItem}) => {
     }
 
     return (
-        <Card key={item.id} width='180px'>
+        <Card width='180px'>
             <header>{item.name}</header>
             <section>
                 <TableBasic noBorder={true} data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>

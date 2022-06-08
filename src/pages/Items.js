@@ -73,7 +73,7 @@ const Items = () => {
                 </Grid>
                 <div id='itemContainer'>
                     { 
-                        sortedItems.map(item => <ItemCard item={item} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+                        sortedItems.map(item => <ItemCard key={item.id} item={item} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
                     }
                 </div>
                 <p>Note: You can't delete an item being used in a meal.</p>
