@@ -173,7 +173,8 @@ const MealDropdown = ({id, type, open, dayId, onChooseMeal, onClick, onClose, mo
     const onClickName = (e) => {
         //When clicking item, check whether popup needs to be above or below the item, defaulting to below
         if (!open) {
-            let rect = e.target.getBoundingClientRect();
+            let nameEl = e.target.closest('#name');
+            let rect = nameEl.getBoundingClientRect();
             let bottom = rect.bottom;
             let listHeight = sortedMealsOfType.length * 30;
             listHeight = listHeight > 260 ? 260 : listHeight;
