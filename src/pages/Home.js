@@ -5,7 +5,6 @@ import context from '../state/context';
 
 import Input from '../components/Input';
 import Planner from '../containers/Planner';
-import BasicButton from '../components/BasicButton';
 import ConfirmationPopup from '../components/ConfirmationPopup';
 
 

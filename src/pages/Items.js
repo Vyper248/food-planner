@@ -4,14 +4,12 @@ import { useContext, useState } from 'react';
 import context from '../state/context';
 import { sortArray } from '../functions';
 
-import Card from '../components/Card';
 import BasicButton from '../components/BasicButton';
-import TableBasic from '../components/TableBasic';
-import ConfirmButtonPopup from '../components/ConfirmButtonPopup';
 import Grid from '../components/Grid';
 import Dropdown from '../components/Dropdown';
 import Modal from '../components/Modal';
 import Container from '../components/Container';
+import ItemCard from '../containers/ItemCard';
 
 import AddEditItem from '../containers/AddEditItem';
 
@@ -23,7 +21,7 @@ const StyledComp = styled.div`
 `
 
 const Items = () => {
-    const { items, meals, dispatch } = useContext(context);
+    const { items, dispatch } = useContext(context);
     const [sort, setSort] = useState('Name');
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen, setAddOpen] = useState(false);
@@ -62,22 +60,6 @@ const Items = () => {
         dispatch({type: 'DELETE_ITEM', payload: item});
     }
 
-    const checkIfCanDelete = (item) => {
-        let canDelete = true;
-
-        for (let i = 0; i < meals.length; i++) {
-            const meal = meals[i];
-            const itemList = meal.itemList;
-
-            if (itemList.find(itemObj => itemObj.id === item.id) !== undefined) {
-                canDelete = false;
-                break;
-            }
-        }
-
-        return canDelete;
-    }
-
     let sortedItems = sortArray(sort, items);
     
     return (
@@ -91,23 +73,7 @@ const Items = () => {
                 </Grid>
                 <div id='itemContainer'>
                     { 
-                        sortedItems.map(item => {
-                            return (
-                                <Card key={item.id} width='180px'>
-                                    <header>{item.name}</header>
-                                    <section>
-                                        <TableBasic data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>
-                                    </section>
-                                    <footer>
-                                        <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='var(--button-color-normal)'/>
-                                        {
-                                            checkIfCanDelete(item) ? <ConfirmButtonPopup label="Delete" width='80px' color='var(--button-color-caution)' onClick={onDeleteItem(item)}/>
-                                                                : null
-                                        }
-                                    </footer>
-                                </Card>
-                            );
-                        })
+                        sortedItems.map(item => <ItemCard item={item} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
                     }
                 </div>
                 <p>Note: You can't delete an item being used in a meal.</p>

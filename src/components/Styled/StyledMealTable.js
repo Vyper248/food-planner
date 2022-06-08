@@ -5,6 +5,7 @@ const StyledMealTable = styled(StyledTable)`
     margin-top: 20px;
     border-collapse: separate;
     border-spacing: 0;
+    border: none;
 
     & tr > td:not(:first-child) {
         padding: 0px;
@@ -22,22 +23,22 @@ const StyledMealTable = styled(StyledTable)`
 
     thead > tr > th:nth-child(2) {
         border-top-left-radius: 5px;
-        border-left: 1px solid #CCC;
+        border-left: 1px solid var(--menu-border-color);
     }
 
     thead > tr > th:last-child {
-        border-right: 1px solid #CCC;
+        border-right: 1px solid var(--menu-border-color);
     }
 
     thead > tr > th {
-        border-top: 1px solid #CCC;
-        border-right: 1px solid #CCC;
+        border-top: 1px solid var(--menu-border-color);
+        border-right: 1px solid var(--menu-border-color);
     }
 
     tbody > tr > td:first-child {
-        background-color: #DDD;
-        border-bottom: 1px solid #CCC;
-        border-left: 1px solid #CCC;
+        background-color: var(--table-header-color);
+        border-bottom: 1px solid var(--menu-border-color);
+        border-left: 1px solid var(--menu-border-color);
         font-weight: bold;
     }
 
@@ -47,17 +48,21 @@ const StyledMealTable = styled(StyledTable)`
 
     tbody > tr:first-child > td:first-child {
         border-top-left-radius: 5px;
-        border-top: 1px solid #CCC;
+        border-top: 1px solid var(--menu-border-color);
     }
 
     tbody > tr.hidden > td {
         background-color: transparent;
         border: none;
-        border-top: 1px solid #CCC;
+        border-top: 1px solid var(--menu-border-color);
         
         & > div {
             height: 30px;
         }
+    }
+
+    tr > td:last-child {
+        border-right: 1px solid var(--menu-border-color);
     }
 `
 

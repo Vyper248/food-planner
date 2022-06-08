@@ -8,7 +8,7 @@ const MealCard = ({meal, getCalories, openEditModal, onDeleteItem}) => {
         <Card key={meal.id} width='200px'>
             <header>{meal.name}</header>
             <section>
-                <TableBasic data={[['Type', meal.type], ['Calories', getCalories(meal)]]}/>
+                <TableBasic noBorder={true} data={[['Type', meal.type], ['Calories', getCalories(meal)]]}/>
             </section>
             <footer>
                 <BasicButton label="Edit" onClick={openEditModal(meal)} width='80px' color='var(--button-color-normal)'/>

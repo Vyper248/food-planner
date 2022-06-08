@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 
 const StyledComp = styled.button`
-    background-color: #DDD;
+    background-color: var(--button-color-normal);
     color: black;
     width: 150px;
     height: 28px;

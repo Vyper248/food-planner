@@ -19,7 +19,7 @@ const StyledComp = styled.div`
 
     & > label {
         padding: 0px 10px;
-        background-color: rgb(239,239,239);
+        background-color: var(--menu-background-color);
         position: relative;
         z-index: -1;
         width: ${props => props.labelWidth ? props.labelWidth+'px' : ''};

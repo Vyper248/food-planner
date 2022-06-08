@@ -61,8 +61,8 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
                 }
             </section>
             <footer>
-                <BasicButton label='Save' onClick={onSave}/>
-                <BasicButton label='Cancel' onClick={onCancel}/>
+                <BasicButton label='Save' onClick={onSave} color='var(--button-color-success)'/>
+                <BasicButton label='Cancel' onClick={onCancel} color='var(--button-color-caution)'/>
             </footer>
         </>
     );

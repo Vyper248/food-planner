@@ -24,3 +24,27 @@ export const organiseMeals = (meals) => {
 
     return obj;
 }
+
+export const setColorScheme = (scheme) => {
+    let root = document.documentElement;
+
+    if (scheme === 'blue') {
+        root.style.setProperty('--button-color-normal', '#a3d5f7');
+        root.style.setProperty('--button-color-caution', '#ff6161');
+        root.style.setProperty('--button-color-success', 'lightgreen');
+        root.style.setProperty('--menu-background-color', '#a3d5f7');
+        root.style.setProperty('--menu-border-color', '#67bbf5');
+        root.style.setProperty('--menu-selected-color', '#67bbf5');
+        root.style.setProperty('--background-color', 'white');   
+    }
+
+    if (scheme === 'gray') {
+        root.style.setProperty('--button-color-normal', '#a3d5f7');
+        root.style.setProperty('--button-color-caution', '#ff6161');
+        root.style.setProperty('--button-color-success', 'lightgreen');
+        root.style.setProperty('--menu-background-color', '#EEE');
+        root.style.setProperty('--menu-border-color', 'gray');
+        root.style.setProperty('--menu-selected-color', '#BBB');
+        root.style.setProperty('--background-color', 'white');
+    }
+}

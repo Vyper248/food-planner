@@ -2,14 +2,13 @@
   --button-color-normal: #a3d5f7;
   --button-color-caution: #ff6161;
   --button-color-success: lightgreen;
-  --menu-background-color: #EEE;
-  --menu-border-color: gray;
-  --menu-selected-color: #BBB;
-  --background-color: white;
-
   --menu-background-color: #a3d5f7;
   --menu-border-color: #67bbf5;
   --menu-selected-color: #67bbf5;
+  --background-color: white;
+
+  --table-header-color: #a3d5f7;
+  --table-row-color: #e3f6fc;
 }
 
 * {

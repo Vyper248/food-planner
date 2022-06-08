@@ -12,8 +12,10 @@ import Input from '../components/Input';
 import { sortArray } from '../functions';
 
 const StyledComp = styled.div`
+    margin-bottom: 10px;
+
     & tr {
-        border: 1px solid #CCC !important;
+        border: 1px solid var(--menu-border-color) !important;
     }
 `
 

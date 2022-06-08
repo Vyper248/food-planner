@@ -25,7 +25,7 @@ const StyledComp = styled.div`
         display: inline-block;
         height: 28px;
         padding: 5px 10px;
-        background-color: #DDD;
+        background-color: var(--button-color-normal);
         border-radius: 0px 5px 5px 0px;
     }
 

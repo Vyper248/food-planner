@@ -11,7 +11,7 @@ import StockList from '../containers/StockList';
 
 const StyledComp = styled.tr`
     width: 500px;
-    border: 1px solid #CCC !important;
+    border: 1px solid var(--menu-border-color) !important;
 
     & > td#checkbox > div {
         margin: 0px;

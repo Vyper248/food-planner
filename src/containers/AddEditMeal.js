@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
 
 import context from '../state/context';
 
@@ -101,7 +102,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                             <div key={`itemList-${i}`}>
                                 <Dropdown labelText='Item' width='150' value={item.id} options={sortedItems.map( item => ({value: item.id, display: `${item.name} (${item.size}${item.measurement})`}) )} onChange={onChangeItem(i)}/>
                                 <Input type='number' labelText={measurement} labelWidth='100' width='70' value={item.qty} onChange={onChangeQty(i)}/>
-                                <BasicButton label='Del' width='50px' onClick={onDeleteItem(i)}/>
+                                <BasicButton label={<FaTrashAlt/>} color='var(--button-color-caution)' iconSize='1.2em' width='50px' onClick={onDeleteItem(i)}/>
                                 <br/>
                             </div>
                         );
@@ -109,7 +110,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                 }
                 {
                     items.length > 0 
-                        ? <BasicButton label='Add New Item' color='lightblue' width='150px' onClick={onAddItem}/>
+                        ? <BasicButton label='Add New Item' color='var(--button-color-normal)' width='150px' onClick={onAddItem}/>
                         : <p>Please add an item before creating a meal</p> 
                 }
                 {
@@ -119,8 +120,8 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                 }
             </section>
             <footer>
-                <BasicButton label='Save' onClick={onSave}/>
-                <BasicButton label='Cancel' onClick={onCancel}/>
+                <BasicButton label='Save' onClick={onSave} color='var(--button-color-success)'/>
+                <BasicButton label='Cancel' onClick={onCancel} color='var(--button-color-caution)'/>
             </footer>
         </>
     );
