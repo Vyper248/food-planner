@@ -24,7 +24,7 @@ const StyledComp = styled.div`
         border: 1px solid transparent;
         outline: 1px solid transparent;
         outline-offset: 0px;
-        ${props => props.open ? 'border: 1px solid blue;' : ''};
+        ${props => props.open ? 'background-color: var(--menu-background-color);' : ''};
 
         :hover {
             cursor: pointer;
@@ -85,7 +85,7 @@ const StyledComp = styled.div`
             width: calc(100% - 10px);
             max-height: 260px;
             overflow: scroll;
-            background-color: var(--menu-background-color);
+            background-color: var(--background-color);
 
             li:hover {
                 cursor: pointer;

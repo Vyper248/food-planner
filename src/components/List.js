@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledComp = styled.ul`
     text-align: left;
-    border: 1px solid #DDD;
+    border: 1px solid var(--menu-border-color);
     border-radius: 5px;
     padding: 0px;
     display: inline-block;
@@ -10,7 +10,7 @@ const StyledComp = styled.ul`
     margin: 5px;
 
     & > li {
-        border-bottom: 1px solid #DDD;
+        border-bottom: 1px solid var(--menu-border-color);
         padding: 5px;
         list-style: none;
     }
@@ -21,7 +21,7 @@ const StyledComp = styled.ul`
 
     & > h4 {
         margin: 0px;
-        border-bottom: 1px solid #DDD;
+        border-bottom: 1px solid var(--menu-border-color);
         padding: 5px;
         text-align: center;
         background-color: #DDD;

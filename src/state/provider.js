@@ -25,7 +25,10 @@ const initialState = {
     },
     shoppingList: {},
     stockList: [],
-    colorScheme: 'Blue'
+    colorScheme: 'Blue',
+    hideBreakfast: false,
+    hideLunch: false,
+    hideDinner: false
 };
 
 const reducer = (state={}, action) => {
@@ -58,6 +61,9 @@ const reducer = (state={}, action) => {
         case 'EDIT_PLANNER_MEAL': return {...state, planner: {...state.planner, dailyMeals: editDailyMeals(value, state.planner.dailyMeals)}};
 
         case 'SET_COLOR_SCHEME': return {...state, colorScheme: value};
+        case 'SET_HIDE_BREAKFAST': return {...state, hideBreakfast: value};
+        case 'SET_HIDE_LUNCH': return {...state, hideLunch: value};
+        case 'SET_HIDE_DINNER': return {...state, hideDinner: value};
 
         case 'RESTORE_LOCAL': return {...state, ...value};
 

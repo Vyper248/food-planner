@@ -13,7 +13,7 @@ const StyledComp = styled.div`
 `
 
 const Planner = ({dailyMeals, allMeals}) => {
-    const { planner, meals, dispatch } = useContext(context);
+    const { planner, meals, hideBreakfast, hideLunch, hideDinner, dispatch } = useContext(context);
     const { days } = planner;
     const [ openId, setOpenId ] = useState(0);
     const [ switching, setSwitching ] = useState(false);
@@ -151,9 +151,9 @@ const Planner = ({dailyMeals, allMeals}) => {
                 <thead>
                     <tr>
                         <th><BasicButton label={<FiChevronUp/>} color='var(--button-color-normal)' width='50px' iconTop='-2px' onClick={moveStartDayUp}/></th>
-                        <th>Breakfast</th>
-                        <th>Lunch</th>
-                        <th>Dinner</th>
+                        { hideBreakfast ? null : <th>Breakfast</th> }
+                        { hideLunch ? null : <th>Lunch</th> }
+                        { hideDinner ? null : <th>Dinner</th> }
                     </tr>
                 </thead>
                 <tbody>
@@ -162,18 +162,18 @@ const Planner = ({dailyMeals, allMeals}) => {
                         return (
                             <tr key={`meal-${obj.id}`}>
                                 <td>{obj.day}</td>
-                                <td>{getMealDropdown(obj.breakfastId, 'Breakfast', obj.id)}</td>
-                                <td>{getMealDropdown(obj.lunchId, 'Lunch', obj.id)}</td>
-                                <td>{getMealDropdown(obj.dinnerId, 'Dinner', obj.id)}</td>
+                                { hideBreakfast ? null : <td>{getMealDropdown(obj.breakfastId, 'Breakfast', obj.id)}</td> }
+                                { hideLunch ? null : <td>{getMealDropdown(obj.lunchId, 'Lunch', obj.id)}</td> }
+                                { hideDinner ? null : <td>{getMealDropdown(obj.dinnerId, 'Dinner', obj.id)}</td> }
                             </tr>
                         );
                     })
                 }
                     <tr className='hidden'>
                         <td><BasicButton label={<FiChevronDown/>} color='var(--button-color-normal)' width='50px' iconTop='-2px' onClick={moveStartDayDown}/></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        { hideBreakfast ? null : <td></td> }
+                        { hideLunch ? null : <td></td> }
+                        { hideDinner ? null : <td></td> }
                     </tr>
                 </tbody>
             </StyledMealTable>
