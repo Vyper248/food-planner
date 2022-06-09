@@ -17,6 +17,17 @@ const StyledComp = styled.div`
     & div#itemContainer {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* Within the AddEditItem component */
+    & #caloriesInfo {
+        opacity: 0.6;
+        font-size: 0.8em;
+        text-align: left;
+        position: relative;
+        top: 3px;
+        max-width: 160px;
     }
 `
 

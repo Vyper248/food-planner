@@ -53,6 +53,7 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
                     <Input type='number' labelText='Size' labelWidth='150' value={size} onChange={onChangeSize}/>
                     <Dropdown labelText='Measurement' value={measurement} labelWidth='150' width='100' options={['g', 'ml', ' items']} onChange={onChangeMeasurement}/>
                     <Input type='number' labelText='Calories' labelWidth='150' value={calories} onChange={onChangeCalories}/>
+                    <span id='caloriesInfo'>This is the total calories for the entire pack.</span>
                 </Grid>
                 {
                     error.length > 0
