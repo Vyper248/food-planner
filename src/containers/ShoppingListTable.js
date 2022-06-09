@@ -13,7 +13,6 @@ const StyledRow = styled.tr`
 `
 
 const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
-    if (qty <= 0) return null;
     return (
         <StyledRow>
             <td id='checkbox'><Input type='checkbox' value={checked} onChange={onClickCheckbox}/></td>
@@ -33,6 +32,7 @@ const StyledListContainer = styled.div`
 `;
 
 const ShoppingListTable = ({itemList, onCheckItem}) => {
+    itemList = itemList.filter(item => item.qty > 0);
     const pageWidth = window.innerWidth;
     const totalItems = itemList.length;
     let combinedArr = [];
