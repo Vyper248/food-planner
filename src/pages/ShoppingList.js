@@ -1,53 +1,11 @@
-import styled from 'styled-components';
 import { useContext, useState, useEffect } from 'react';
 
 import context from '../state/context';
 
 import Container from '../components/Container';
-import Input from '../components/Input';
-import StyledTable from '../components/Styled/StyledTable';
 import BasicButton from '../components/BasicButton';
 import StockList from '../containers/StockList';
-
-const StyledComp = styled.tr`
-    width: 500px;
-    border: 1px solid var(--menu-border-color) !important;
-
-    & > td#checkbox > div {
-        margin: 0px;
-        height: 25px;
-    }
-`
-
-const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
-    if (qty === 0) return null;
-    return (
-        <StyledComp>
-            <td id='checkbox'><Input type='checkbox' value={checked} onChange={onClickCheckbox}/></td>
-            <td id='qty'>{qty}</td>
-            <td id='name' style={{width: '300px'}}>{name}</td>
-        </StyledComp>
-    );
-}
-
-const ListTable = ({itemList, onCheckItem}) => {
-    return (
-        <StyledTable>
-            <thead>
-                <tr>
-                    <th style={{minWidth: '50px'}}></th>
-                    <th style={{minWidth: '60px'}}>Qty</th>
-                    <th>Item</th>
-                </tr>
-            </thead>
-            <tbody>
-            {
-                itemList.map(item => <ListItem key={'listItem-'+item.id} name={item.name} qty={item.qty} checked={item.checked} onClickCheckbox={onCheckItem(item.id)}/>)
-            }
-            </tbody>
-        </StyledTable>
-    );
-}
+import ShoppingListTable from '../containers/ShoppingListTable';
 
 const ShoppingList = () => {
     const { planner, meals, items, shoppingList, stockList, dispatch } = useContext(context);
@@ -140,7 +98,7 @@ const ShoppingList = () => {
             <Container>
                 <BasicButton label='Uncheck All' color='var(--button-color-caution)' onClick={uncheckAllItems}/>
                 {
-                    itemList.length > 0 ? <ListTable itemList={itemList} onCheckItem={onCheckItem}/> : <p>No Items Needed</p>
+                    itemList.length > 0 ? <ShoppingListTable itemList={itemList} onCheckItem={onCheckItem}/> : <p>No Items Needed</p>
                 }
             </Container>
             <StockList/>

@@ -85,7 +85,7 @@ const StockList = () => {
                         stockList.map(item => {
                             return (
                                 <tr key={'stockItem-'+item.id}>
-                                    <td className='input'><Input type='number' width='60' value={item.stock} onChange={onChangeStock(item.id)}/></td>
+                                    <td className='input'><Input type='number' width='80' value={item.stock} onChange={onChangeStock(item.id)}/></td>
                                     <td style={{minWidth: '61px'}}>{item.measurement}</td>
                                     <td style={{minWidth: '200px'}}>{item.name}</td>
                                     <td className='input'><BasicButton label={<FaTrashAlt/>} width='50px' iconSize='1.2em' color='var(--button-color-caution)' onClick={onRemoveStock(item.id)}/></td>
