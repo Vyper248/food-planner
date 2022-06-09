@@ -13,7 +13,7 @@ const StyledRow = styled.tr`
 `
 
 const ListItem = ({qty, name, checked=false, onClickCheckbox}) => {
-    if (qty === 0) return null;
+    if (qty <= 0) return null;
     return (
         <StyledRow>
             <td id='checkbox'><Input type='checkbox' value={checked} onChange={onClickCheckbox}/></td>
