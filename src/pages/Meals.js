@@ -48,9 +48,9 @@ const Meals = () => {
             <h3>Meals</h3>
             <Container>
                 <BasicButton label='Add New Meal' color='var(--button-color-normal)' onClick={openAddModal}/>
-                <MealGroup heading='Breakfast' mealsInGroup={organisedMeals.breakfast} openEditModal={openEditModal}/>
-                <MealGroup heading='Lunch' mealsInGroup={organisedMeals.lunch} openEditModal={openEditModal}/>
-                <MealGroup heading='Dinner' mealsInGroup={organisedMeals.dinner} openEditModal={openEditModal}/>
+                { organisedMeals.breakfast.length === 0 ? null : <MealGroup heading='Breakfast' mealsInGroup={organisedMeals.breakfast} openEditModal={openEditModal}/> }
+                { organisedMeals.lunch.length === 0 ? null : <MealGroup heading='Lunch' mealsInGroup={organisedMeals.lunch} openEditModal={openEditModal}/> }
+                { organisedMeals.dinner.length === 0 ? null : <MealGroup heading='Dinner' mealsInGroup={organisedMeals.dinner} openEditModal={openEditModal}/> }
             </Container>
             <Modal open={editOpen} closeFunc={closeModal}>
                 { editOpen ? <AddEditMeal meal={mealToEdit} onFinish={onChangeMeal} onCancel={closeModal}/> : null }
