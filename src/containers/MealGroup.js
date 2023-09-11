@@ -20,25 +20,31 @@ const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
         dispatch({type: 'DELETE_MEAL', payload: meal});
     }
 
-    const getCalories = (meal) => {
-        let totalCalories = 0;
+    const getTotalValue = (meal, key, parseAsInt=false) => {
+        let totalValue = 0;
+        let missingVal = false;
 
         const thisMeal = meals.find(obj => obj.id === meal.id);
         if (thisMeal) {
             const mealItems = thisMeal.itemList.map(item => {
                 let itemObj = items.find(obj => obj.id === item.id);
-                if (!itemObj) return {calories: 0};
+                if (!itemObj) return {[key]: 0};
                 let copy = {...itemObj, qty: item.qty};
                 return copy;
             });
         
-            totalCalories = mealItems.reduce((a,c) => {
-                if (c.calories === 0) return a;
-                return a += parseInt(c.calories / c.size * c.qty);
+            totalValue = mealItems.reduce((a,c) => {
+                if (c[key] === undefined || c[key] === 0) {
+                    missingVal = true;
+                    return a;
+                }
+
+                if (parseAsInt) return a += parseInt((c[key] / c.size) * c.qty);
+                else return a += (c[key] / c.size) * c.qty;
             }, 0);
         }
 
-        return totalCalories;
+        return {totalValue, missingVal};
     }
 
     return (
@@ -46,7 +52,7 @@ const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
             <h4>{heading}</h4>
             <div id='mealContainer'>
                 { 
-                    mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getCalories={getCalories} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+                    mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getValue={getTotalValue} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
                 }
             </div>
             { 

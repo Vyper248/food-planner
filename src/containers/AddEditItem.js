@@ -10,12 +10,14 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
     const [size, setSize] = useState(item.size || 0);
     const [measurement, setMeasurement] = useState(item.measurement || 'g');
     const [calories, setCalories] = useState(item.calories || 0);
+    const [price, setPrice] = useState(item.price || 0);
     const [error, setError] = useState('');
 
     if (editing && item.name === undefined) return null;
 
     const onChangeMeasurement = (value) => setMeasurement(value);
     const onChangeCalories = (value) => setCalories(value);
+    const onChangePrice = (value) => setPrice(value);
 
     const onChangeSize = (value) => {
         setSize(value);
@@ -38,7 +40,7 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
             return;
         }
 
-        let newItem = {...item, name, size, measurement, calories};
+        let newItem = {...item, name, size, measurement, calories, price};
         onFinish(newItem);
     }
 
@@ -54,6 +56,8 @@ const AddEditItem = ({item={}, editing=false, onFinish, onCancel}) => {
                     <Dropdown labelText='Measurement' value={measurement} labelWidth='150' width='100' options={['g', 'ml', ' items']} onChange={onChangeMeasurement}/>
                     <Input type='number' labelText='Calories' labelWidth='150' value={calories} onChange={onChangeCalories}/>
                     <span id='caloriesInfo'>This is the total calories for the entire pack.</span>
+                    <Input type='number' labelText='Price' labelWidth='150' value={price} onChange={onChangePrice}/>
+                    <span id='caloriesInfo'>This is the total price for the pack.</span>
                 </Grid>
                 {
                     error.length > 0

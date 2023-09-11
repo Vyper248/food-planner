@@ -2,6 +2,8 @@ import { useContext } from 'react';
 
 import context from '../state/context';
 
+import { parseCurrency } from '../functions';
+
 import Card from "../components/Card";
 import TableBasic from "../components/TableBasic";
 import BasicButton from "../components/BasicButton";
@@ -26,11 +28,20 @@ const ItemCard = ({item, openEditModal, onDeleteItem}) => {
         return canDelete;
     }
 
+    const tableData = [
+        ['Size', item.size+item.measurement], 
+        ['Calories', item.calories]
+    ]
+
+    if (item.price > 0) {
+        tableData.push(['Price', parseCurrency(item.price)]);
+    }
+
     return (
         <Card width='180px'>
             <header>{item.name}</header>
             <section>
-                <TableBasic noBorder={true} data={[['Size', item.size+item.measurement], ['Calories', item.calories]]}/>
+                <TableBasic noBorder={true} data={tableData}/>
             </section>
             <footer>
                 <BasicButton label="Edit" onClick={openEditModal(item)} width='80px' color='var(--button-color-normal)'/>

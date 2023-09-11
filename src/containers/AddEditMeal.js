@@ -3,7 +3,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 import context from '../state/context';
 
-import { sortArray } from '../functions';
+import { sortArray, parseCurrency } from '../functions';
 
 import BasicButton from '../components/BasicButton';
 import Dropdown from '../components/Dropdown';
@@ -100,7 +100,7 @@ const AddEditMeal = ({meal={}, editing=false, onFinish, onCancel}) => {
                         let measurement = getMeasurementText(item.id);
                         return (
                             <div key={`itemList-${i}`}>
-                                <Dropdown labelText='Item' width='150' value={item.id} options={sortedItems.map( item => ({value: item.id, display: `${item.name} (${item.size}${item.measurement})`}) )} onChange={onChangeItem(i)}/>
+                                <Dropdown labelText='Item' width='150' value={item.id} options={sortedItems.map( item => ({value: item.id, display: `${item.name} (${item.size}${item.measurement})${item.price > 0 ? `- ${parseCurrency(item.price)}` : ''}`}) )} onChange={onChangeItem(i)}/>
                                 <Input type='number' labelText={measurement} labelWidth='100' width='70' value={item.qty} onChange={onChangeQty(i)}/>
                                 <BasicButton label={<FaTrashAlt/>} color='var(--button-color-caution)' iconSize='1.2em' width='50px' onClick={onDeleteItem(i)}/>
                                 <br/>

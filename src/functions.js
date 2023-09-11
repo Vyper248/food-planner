@@ -25,6 +25,41 @@ export const organiseMeals = (meals) => {
     return obj;
 }
 
+export const parseCurrency = (value, removeDecimals = false) => {
+    let showDecimals = true;
+    if (removeDecimals) showDecimals = false;   
+
+    //make sure it doens't return -£0.00
+    if (value > -0.009 && value < 0.009) return `£0${showDecimals ? '.00' : ''}`;
+    if (value === null || value === undefined || value === 0 || isNaN(value) || value === Infinity) return `£0${showDecimals ? '.00' : ''}`;
+
+    //check if it's negative and remove symbol
+    let negative = false;
+    if (value < 0) {
+        negative = true;
+        value *= -1;
+    }
+
+    //convert to string and split into array
+    let string = Number(value).toFixed(showDecimals ? 2 : 0);    
+    let arr = string.split('');
+
+    //add commas where needed
+    for (let i = arr.length-4; i >= 0; i--) {
+        let fromRight = arr.length - i - 4;
+        if (showDecimals === false) fromRight = arr.length - i - 1;
+        if (fromRight > 0 && fromRight%3 === 0) arr[i] += ',';
+    }
+
+    //add currency symbol to beginning
+    arr.unshift('£');
+
+    //add back negative symbol if needed
+    if (negative) arr.unshift('-');
+
+    return arr.join('');    
+}
+
 export const setColorScheme = (scheme) => {
     let root = document.documentElement;
 
