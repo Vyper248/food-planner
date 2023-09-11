@@ -76,7 +76,7 @@ const Items = () => {
     let sortedItems = sortArray(sort, items);
     let searchedItems = sortedItems.filter(item => {
         if (search === '') return true;
-        if (item.name.includes(search)) return true;
+        if (item.name.toLowerCase().includes(search.toLowerCase())) return true;
         return false;
     });
     
