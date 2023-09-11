@@ -10,6 +10,7 @@ import Dropdown from '../components/Dropdown';
 import Modal from '../components/Modal';
 import Container from '../components/Container';
 import ItemCard from '../containers/ItemCard';
+import Input from '../components/Input';
 
 import AddEditItem from '../containers/AddEditItem';
 
@@ -34,6 +35,7 @@ const StyledComp = styled.div`
 const Items = () => {
     const { items, dispatch } = useContext(context);
     const [sort, setSort] = useState('Name');
+    const [search, setSearch] = useState('');
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen, setAddOpen] = useState(false);
     const [itemToEdit, setItemToEdit] = useState(undefined);
@@ -72,19 +74,24 @@ const Items = () => {
     }
 
     let sortedItems = sortArray(sort, items);
+    let searchedItems = sortedItems.filter(item => {
+        if (search === '') return true;
+        if (item.name.includes(search)) return true;
+        return false;
+    });
     
     return (
         <StyledComp>
             <h3>Items</h3>
             <Container>
                 <Grid columnTemplate='1fr 1fr 1fr'>
-                    <div></div>
+                    <div><Input labelText='Search' value={search} onChange={setSearch}/></div>
                     <div><BasicButton label='Add New Item' color='var(--button-color-normal)' onClick={openAddModal}/></div>
                     <div><Dropdown labelText='Sort By' value={sort} options={['Name', 'Calories', 'Size']} onChange={onChangeSort}/></div>
                 </Grid>
                 <div id='itemContainer'>
                     { 
-                        sortedItems.map(item => <ItemCard key={item.id} item={item} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+                        searchedItems.map(item => <ItemCard key={item.id} item={item} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
                     }
                 </div>
                 <p>Note: You can't delete an item being used in a meal.</p>

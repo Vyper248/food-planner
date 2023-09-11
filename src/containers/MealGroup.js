@@ -47,16 +47,21 @@ const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
         return {totalValue, missingVal};
     }
 
+    const sortedMeals = mealsInGroup.sort((a,b) => {
+        if (a.name === b.name) return 0;
+        return a.name < b.name ? -1 : 1;
+    });
+
     return (
         <StyledComp>
             <h4>{heading}</h4>
             <div id='mealContainer'>
                 { 
-                    mealsInGroup.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getValue={getTotalValue} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+                    sortedMeals.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getValue={getTotalValue} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
                 }
             </div>
             { 
-                mealsInGroup.length === 0 ? <p>No Meals</p> : null
+                sortedMeals.length === 0 ? <p>No Meals</p> : null
             }
         </StyledComp>
     );
