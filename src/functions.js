@@ -60,6 +60,32 @@ export const parseCurrency = (value, removeDecimals = false) => {
     return arr.join('');    
 }
 
+export const getTotalValue = (meal, key, items, parseAsInt=false) => {
+    let totalValue = 0;
+    let missingVal = false;
+
+    if (meal) {
+        const mealItems = meal.itemList.map(item => {
+            let itemObj = items.find(obj => obj.id === item.id);
+            if (!itemObj) return {[key]: 0};
+            let copy = {...itemObj, qty: item.qty};
+            return copy;
+        });
+    
+        totalValue = mealItems.reduce((a,c) => {
+            if (c[key] === undefined || c[key] === 0) {
+                missingVal = true;
+                return a;
+            }
+
+            if (parseAsInt) return a += parseInt((c[key] / c.size) * c.qty);
+            else return a += (c[key] / c.size) * c.qty;
+        }, 0);
+    }
+
+    return {totalValue, missingVal};
+}
+
 export const setColorScheme = (scheme) => {
     let root = document.documentElement;
 

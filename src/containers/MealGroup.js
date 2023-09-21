@@ -5,6 +5,8 @@ import context from '../state/context';
 
 import MealCard from './MealCard';
 
+import { getTotalValue } from '../functions';
+
 const StyledComp = styled.div`
     & div#mealContainer {
         display: flex;
@@ -14,37 +16,14 @@ const StyledComp = styled.div`
 `;
 
 const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
-    const { meals, items, dispatch } = useContext(context);
+    const { items, dispatch } = useContext(context);
 
     const onDeleteItem = (meal) => () => {
         dispatch({type: 'DELETE_MEAL', payload: meal});
     }
 
-    const getTotalValue = (meal, key, parseAsInt=false) => {
-        let totalValue = 0;
-        let missingVal = false;
-
-        const thisMeal = meals.find(obj => obj.id === meal.id);
-        if (thisMeal) {
-            const mealItems = thisMeal.itemList.map(item => {
-                let itemObj = items.find(obj => obj.id === item.id);
-                if (!itemObj) return {[key]: 0};
-                let copy = {...itemObj, qty: item.qty};
-                return copy;
-            });
-        
-            totalValue = mealItems.reduce((a,c) => {
-                if (c[key] === undefined || c[key] === 0) {
-                    missingVal = true;
-                    return a;
-                }
-
-                if (parseAsInt) return a += parseInt((c[key] / c.size) * c.qty);
-                else return a += (c[key] / c.size) * c.qty;
-            }, 0);
-        }
-
-        return {totalValue, missingVal};
+    const getValue = (meal, key, parseAsInt=false) => {
+        return getTotalValue(meal, key, items, parseAsInt);
     }
 
     const sortedMeals = mealsInGroup.sort((a,b) => {
@@ -57,7 +36,7 @@ const MealGroup = ({mealsInGroup, heading, openEditModal}) => {
             <h4>{heading}</h4>
             <div id='mealContainer'>
                 { 
-                    sortedMeals.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getValue={getTotalValue} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
+                    sortedMeals.map(meal => <MealCard key={'meal-'+meal.id} meal={meal} getValue={getValue} openEditModal={openEditModal} onDeleteItem={onDeleteItem}/>)
                 }
             </div>
             { 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 import context from '../state/context';
+import { getTotalValue, parseCurrency } from '../functions';
 
 import StyledMealTable from '../components/Styled/StyledMealTable';
 import MealDropdown from '../containers/MealDropdown';
@@ -12,8 +13,17 @@ const StyledComp = styled.div`
     margin: 0px 20px;
 `
 
+const getMealCost = (arr, id, items) => {
+    if (id === 0) return 0;
+    let obj = arr.find(item => item.id === id);
+
+    if (!obj) return 0;
+    let value = getTotalValue(obj, 'price', items);
+    return value.totalValue;
+}
+
 const Planner = ({dailyMeals, allMeals}) => {
-    const { planner, meals, hideBreakfast, hideLunch, hideDinner, dispatch } = useContext(context);
+    const { planner, meals, items, hideBreakfast, hideLunch, hideDinner, dispatch } = useContext(context);
     const { days } = planner;
     const [ openId, setOpenId ] = useState(0);
     const [ switching, setSwitching ] = useState(false);
@@ -27,6 +37,17 @@ const Planner = ({dailyMeals, allMeals}) => {
     breakfastMeals.unshift({id: 0, name: 'Empty'});
     lunchMeals.unshift({id: 0, name: 'Empty'});
     dinnerMeals.unshift({id: 0, name: 'Empty'});
+
+    const totalCost = () => {
+        let totalCost = 0;
+        dailyMeals.forEach(meal => {
+            let breakfast = getMealCost(breakfastMeals, meal.breakfastId, items);
+            let lunch = getMealCost(lunchMeals, meal.lunchId, items);
+            let dinner = getMealCost(dinnerMeals, meal.dinnerId, items);
+            totalCost += breakfast + lunch + dinner;
+        });
+        return totalCost;
+    }
 
     const onOpenMeal = (id) => () => {
         setOpenId(id);
@@ -140,6 +161,14 @@ const Planner = ({dailyMeals, allMeals}) => {
                 />
     }
 
+    const getColSpan = () => {
+        let span = 3;
+        if (hideBreakfast) span--;
+        if (hideLunch) span--;
+        if (hideDinner) span--;
+        return span;
+    }
+
     const mealsToDisplay = [];
     dailyMeals.forEach((meal, i) => {
         if (i < days) mealsToDisplay.push(meal);
@@ -171,9 +200,7 @@ const Planner = ({dailyMeals, allMeals}) => {
                 }
                     <tr className='hidden'>
                         <td><BasicButton label={<FiChevronDown/>} color='var(--button-color-normal)' width='50px' iconTop='-2px' onClick={moveStartDayDown}/></td>
-                        { hideBreakfast ? null : <td></td> }
-                        { hideLunch ? null : <td></td> }
-                        { hideDinner ? null : <td></td> }
+                        <td colSpan={getColSpan()}>Total Cost: {parseCurrency(totalCost())}</td>
                     </tr>
                 </tbody>
             </StyledMealTable>
